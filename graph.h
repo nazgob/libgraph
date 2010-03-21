@@ -2,11 +2,11 @@
 #define GRAPH_H
 
 #include <iostream>
-#include <cassert>
 #include <vector>
 #include <algorithm>
 #include <list>
 #include <utility>
+#include <cassert>
 
 #include <boost/lambda/lambda.hpp>
 //using namespace boost::lambda;
@@ -20,11 +20,6 @@ namespace advcpp
 	template<typename T, memory>
 		class memory_selector
 		{
-			public:
-				void boom()
-				{
-					// std::cout << "boom" << std::endl;
-				}
 		};
 
 	//typedef std::pair<node<int>, std::list<int> > node_list_pair;
@@ -46,10 +41,6 @@ namespace advcpp
 		class memory_selector<T, linked_list>
 		{
 			public:
-				void boom()
-				{
-					// std::cout << "boom linked_list" << std::endl;
-				}
 				void add(node<T>& input_node)
 				{
 					std::list<T> new_list;
@@ -67,6 +58,10 @@ namespace advcpp
 				{
 					return storage.size();
 				}
+				void reserve(size_t size)
+				{
+					storage.reserve(size);
+				}
 			protected:
 				std::vector<typename node_list_pair<T>::type > storage;
 		};
@@ -75,24 +70,47 @@ namespace advcpp
 		class memory_selector<T, matrix>
 		{
 			public:
-				void boom()
-				{
-					// std::cout << "boom matrix" << std::endl;
-				}
 				void add(node<T>& input_node)
 				{
 					storage.push_back(input_node);
+					std::vector<int> row(matrix.size());
+					matrix.push_back(row);
+
+					for(std::vector<std::vector<int> >::iterator it = matrix.begin();
+																 it != matrix.end();
+																 ++it)
+					{
+						(*it).push_back(0);
+					}
+
+					// TODO: make propper tests for that and get rid of it
+					assert(storage.size() == matrix.size());
+					for(std::vector<std::vector<int> >::iterator it = matrix.begin();
+																 it != matrix.end();
+																 ++it)
+					{
+						assert((*it).size() == storage.size());
+					}
+
 				}
 				void remove(node<T>& input_node)
 				{
 					storage.erase(std::remove(storage.begin(), storage.end(), input_node), storage.end());
+					//TODO: what to do with matrix? mark delete row with 0 or some logiacal flag?
 				}
 				size_t size() const
 				{
 					return storage.size();
 				}
+				void reserve(size_t size)
+				{
+					storage.reserve(size);
+					matrix.reserve(size); // how to reserve stuff 'inside'? is it possible at all?
+				}
+
 			protected:
 				std::vector<node<T> > storage;
+				std::vector<std::vector<int> > matrix;
 		};
 
 	template<typename T, typename Memory = memory_selector<T, matrix> >
@@ -101,7 +119,6 @@ namespace advcpp
 			public:
 				graph()
 				{
-					containter.boom();
 				}
 
 				void add(node<T>& input_node) // add node
@@ -126,6 +143,11 @@ namespace advcpp
 				{
 					return containter.size();
 				}
+				void reserve(size_t size)
+				{
+					containter.reserve(size);
+				}
+
 
 			protected:
 				Memory containter;

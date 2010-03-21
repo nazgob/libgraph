@@ -2,6 +2,7 @@
 *.swo
 *.o
 *.txt
+*.*~
 tags
 graph
 

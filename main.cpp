@@ -41,6 +41,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(AddRemoveNodesTest, T, graph_types)
 	node<int> n3(3);
 
 	T g;
+	g.reserve(3);
 	BOOST_REQUIRE_EQUAL(g.size(), 0);
 
 	g.add(n1);
