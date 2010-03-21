@@ -26,12 +26,19 @@ BOOST_AUTO_TEST_CASE(InstantiateDifferentGraphs)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(NodesEqualityTest, T, nodes_types)
 {
-	T n1(1);
-    T n2(1);
+	node<T> n1(1);
+    node<T> n2(1);
 	BOOST_REQUIRE(n1 == n2);
 
-	T n3(2);
+	node<T> n3(2);
 	BOOST_REQUIRE(n1 != n3);
+}
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(NodesIdTest, T, nodes_types)
+{
+	// node id has sense only when node is added to the graph
+	node<T> n(1);
+	BOOST_REQUIRE_EQUAL(n.id, 0);
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(AddRemoveNodesTest, T, graph_types)
@@ -62,4 +69,19 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(AddRemoveNodesTest, T, graph_types)
 	g.remove(n3);
 	BOOST_REQUIRE_EQUAL(g.size(), 0);
 }
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(AddArcTest, T, graph_types)
+{
+	node<int> n1(1);
+	node<int> n2(2);
+
+	//T g;
+	graph<int, memory_selector<int, linked_list> > g;
+	g.reserve(2);
+	BOOST_REQUIRE_EQUAL(g.size(), 0);
+
+	g.add(n1, n2);
+	BOOST_REQUIRE_EQUAL(g.size(), 2);
+}
+
 

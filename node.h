@@ -9,7 +9,7 @@ namespace advcpp
 			public:
 				explicit node(const T& input) : value(input), id(0) // does this explicit works / is neccesery?
 			{
-				id = ++nextId;
+				//id = ++nextId;
 			}
 
 				bool operator==(const node<T>& n) const
@@ -26,10 +26,10 @@ namespace advcpp
 				size_t id;
 
 			protected:
-				static int nextId;
+				//static int nextId;
 		};
 
-	template<typename T> int node<T>::nextId = 0;
+	//template<typename T> int node<T>::nextId = 0;
 }
 
 #endif // NODE_H

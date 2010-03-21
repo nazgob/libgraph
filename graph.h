@@ -58,7 +58,19 @@ namespace advcpp
 
 				void add(node<T>& begin_node, node<T>& end_node) // add arc
 				{
+					size_t begin_id = begin_node.id;
+					size_t end_id = end_node.id;
 
+					add(begin_node);
+					add(end_node);
+					storage.at(begin_id).second.push_back(end_id);
+					storage.at(end_id).second.push_back(begin_id);
+
+					/*std::cout << "begin_id = " << begin_id << std::endl;
+					std::cout << "end_id = " << end_id << std::endl;
+					
+					std::cout << storage.at(begin_id).second.front() << std::endl;
+					std::cout << storage.at(end_id).second.front() << std::endl;*/
 				}
 
 				void remove(node<T>& begin_node, node<T>& end_node) // remove arc
@@ -134,12 +146,13 @@ namespace advcpp
 		class graph
 		{
 			public:
-				graph()
+				graph() : id(0)
 				{
 				}
 
 				void add(node<T>& input_node) // add node
 				{
+					input_node.id = id++;
 					containter.add(input_node);
 				}
 				
@@ -150,10 +163,12 @@ namespace advcpp
 
 				void add(node<T>& begin_node, node<T>& end_node) // add arc
 				{
+					begin_node.id = id++;
+					end_node.id = id++;
 					containter.add(begin_node, end_node);
 				}
 
-				void remove(node<T>& input_node, node<T>& end_node) // remove arc
+				void remove(node<T>& begin_node, node<T>& end_node) // remove arc
 				{
 					containter.remove(begin_node, end_node);
 				}
@@ -162,6 +177,7 @@ namespace advcpp
 				{
 					return containter.size();
 				}
+
 				void reserve(size_t size)
 				{
 					containter.reserve(size);
@@ -169,6 +185,7 @@ namespace advcpp
 
 
 			protected:
+				size_t id;
 				Memory containter;
 		};
 } // namespace advcpp
