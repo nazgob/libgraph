@@ -12,10 +12,9 @@ using namespace advcpp;
 
 typedef graph<int, memory_selector<int, linked_list> > list_graph;
 typedef graph<int, memory_selector<int, matrix> > matrix_graph;
-typedef graph<int> default_graph;
 
 typedef boost::mpl::list<int, double, size_t> nodes_types;
-typedef boost::mpl::list<default_graph, matrix_graph, list_graph> graph_types;
+typedef boost::mpl::list<matrix_graph, list_graph> graph_types;
 
 BOOST_AUTO_TEST_CASE(InstantiateDifferentGraphs)
 {
@@ -75,8 +74,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(AddArcTest, T, graph_types)
 	node<int> n1(1);
 	node<int> n2(2);
 
-	//T g;
-	graph<int, memory_selector<int, linked_list> > g;
+	T g;
+	//graph<int, memory_selector<int, linked_list> > g;
 	g.reserve(2);
 	BOOST_REQUIRE_EQUAL(g.size(), 0);
 
@@ -88,8 +87,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(AddSameNodeAsArcTest, T, graph_types)
 {
 	node<int> n(1);
 
-	//T g;
-	graph<int, memory_selector<int, linked_list> > g;
+	T g;
+	//graph<int, memory_selector<int, linked_list> > g;
 	g.reserve(2);
 	BOOST_REQUIRE_EQUAL(g.size(), 0);
 

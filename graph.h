@@ -109,7 +109,7 @@ namespace advcpp
 						(*it).push_back(0);
 					}
 
-					// TODO: make propper tests for that and get rid of it
+					// TODO: make propper tests for that and get rid of this assert
 					assert(storage.size() == matrix.size());
 					for(std::vector<std::vector<int> >::iterator it = matrix.begin();
 																 it != matrix.end();
@@ -124,6 +124,24 @@ namespace advcpp
 				{
 					storage.erase(std::remove(storage.begin(), storage.end(), input_node), storage.end());
 					//TODO: what to do with matrix? mark delete row with 0 or some logiacal flag?
+				}
+
+
+				void add(node<T>& begin_node, node<T>& end_node) // add arc
+				{
+					size_t begin_id = begin_node.id;
+					size_t end_id = end_node.id;
+
+					add(begin_node);
+					add(end_node);
+
+					matrix.at(begin_id).at(end_id) = 1;
+					matrix.at(end_id).at(begin_id) = 1;
+				}
+
+				void remove(node<T>& begin_node, node<T>& end_node) // remove arc
+				{
+
 				}
 
 				size_t size() const
