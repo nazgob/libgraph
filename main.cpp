@@ -84,4 +84,18 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(AddArcTest, T, graph_types)
 	BOOST_REQUIRE_EQUAL(g.size(), 2);
 }
 
+BOOST_AUTO_TEST_CASE_TEMPLATE(AddSameNodeAsArcTest, T, graph_types)
+{
+	node<int> n(1);
+
+	//T g;
+	graph<int, memory_selector<int, linked_list> > g;
+	g.reserve(2);
+	BOOST_REQUIRE_EQUAL(g.size(), 0);
+
+	g.add(n, n);
+	BOOST_REQUIRE_EQUAL(g.size(), 0);
+}
+
+
 

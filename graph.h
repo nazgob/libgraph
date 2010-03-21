@@ -163,6 +163,12 @@ namespace advcpp
 
 				void add(node<T>& begin_node, node<T>& end_node) // add arc
 				{
+					if(begin_node == end_node)
+					{
+						// pass
+						return;
+					}
+
 					begin_node.id = id++;
 					end_node.id = id++;
 					containter.add(begin_node, end_node);
