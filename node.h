@@ -11,16 +11,20 @@ namespace advcpp
 			{
 				id = ++nextId;
 			}
+
 				bool operator==(const node<T>& n) const
 				{
 					return value == n.value;
 				}
+
 				bool operator!=(const node<T>& n) const
 				{
 					return value != n.value;
 				}
+
 				T value;
 				size_t id;
+
 			protected:
 				static int nextId;
 		};

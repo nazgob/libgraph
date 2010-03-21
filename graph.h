@@ -41,12 +41,13 @@ namespace advcpp
 		class memory_selector<T, linked_list>
 		{
 			public:
-				void add(node<T>& input_node)
+				void add(node<T>& input_node) // add node
 				{
 					std::list<T> new_list;
 					storage.push_back(std::make_pair(input_node, new_list)); 
 				}
-				void remove(node<T>& input_node)
+
+				void remove(node<T>& input_node) // remove node
 				{
 					std::list<T> tmp_list;
 					typename node_list_pair<T>::type tmp_pair(input_node, tmp_list);
@@ -54,14 +55,27 @@ namespace advcpp
 
 					storage.erase(std::remove_if(storage.begin(), storage.end(), boost::lambda::_1 == tmp_pair), storage.end());
 				}
+
+				void add(node<T>& begin_node, node<T>& end_node) // add arc
+				{
+
+				}
+
+				void remove(node<T>& begin_node, node<T>& end_node) // remove arc
+				{
+
+				}
+
 				size_t size() const
 				{
 					return storage.size();
 				}
+
 				void reserve(size_t size)
 				{
 					storage.reserve(size);
 				}
+
 			protected:
 				std::vector<typename node_list_pair<T>::type > storage;
 		};
@@ -70,7 +84,7 @@ namespace advcpp
 		class memory_selector<T, matrix>
 		{
 			public:
-				void add(node<T>& input_node)
+				void add(node<T>& input_node) // add node
 				{
 					storage.push_back(input_node);
 					std::vector<int> row(matrix.size());
@@ -93,15 +107,18 @@ namespace advcpp
 					}
 
 				}
-				void remove(node<T>& input_node)
+
+				void remove(node<T>& input_node) // remove node
 				{
 					storage.erase(std::remove(storage.begin(), storage.end(), input_node), storage.end());
 					//TODO: what to do with matrix? mark delete row with 0 or some logiacal flag?
 				}
+
 				size_t size() const
 				{
 					return storage.size();
 				}
+
 				void reserve(size_t size)
 				{
 					storage.reserve(size);
@@ -125,18 +142,20 @@ namespace advcpp
 				{
 					containter.add(input_node);
 				}
-
-				void add(node<T>& begin_node, node<T>& end_node) // add arc
-				{
-				}
-
+				
 				void remove(node<T>& input_node) // remove node
 				{
 					containter.remove(input_node);
 				}
 
+				void add(node<T>& begin_node, node<T>& end_node) // add arc
+				{
+					containter.add(begin_node, end_node);
+				}
+
 				void remove(node<T>& input_node, node<T>& end_node) // remove arc
 				{
+					containter.remove(begin_node, end_node);
 				}
 
 				size_t size() const
