@@ -9,6 +9,7 @@
 #include <cassert>
 
 #include <boost/lambda/lambda.hpp>
+#include <boost/lambda/bind.hpp>
 //using namespace boost::lambda;
 
 #include "node.h"
@@ -22,7 +23,6 @@ namespace advcpp
 		{
 		};
 
-	//typedef std::pair<node<int>, std::list<int> > node_list_pair;
 	template<typename T>
 		class node_list_pair // idiom to have templated typedef
 		{
@@ -31,10 +31,19 @@ namespace advcpp
 		};
 
 	template<typename T>
+		class vector_containter // idiom to have templated typedef
+		{
+			public:
+				typedef std::vector<typename node_list_pair<T>::type > type;
+		};
+
+
+	template<typename T>
 		bool operator==(const typename node_list_pair<T>::type & lhs, const typename node_list_pair<T>::type & rhs)
 		{
 			//std::cout << "comparing pairs = " << lhs.first.id << " " << rhs.first.id << std::endl;
-			return lhs.first.id == rhs.first.id;
+			//return lhs.first.id == rhs.first.id;
+			return lhs.first.value == rhs.first.value;
 		}
 
 	template<typename T>
@@ -51,7 +60,7 @@ namespace advcpp
 				{
 					std::list<T> tmp_list;
 					typename node_list_pair<T>::type tmp_pair(input_node, tmp_list);
-					typename node_list_pair<T>::type tmp_pair2(input_node, tmp_list);
+					//typename node_list_pair<T>::type tmp_pair2(input_node, tmp_list);
 
 					storage.erase(std::remove_if(storage.begin(), storage.end(), boost::lambda::_1 == tmp_pair), storage.end());
 				}
@@ -77,6 +86,22 @@ namespace advcpp
 				{
 
 				}
+				
+				node<T> get_node(const T& value) const
+				{
+					/*typename vector_containter<T>::type::iterator it = std::find_if(storage.begin(), storage.end(),
+								boost::lambda::bind(&vector_containter<T>::type::value_type::first_value::value,
+								boost::lambda::bind(&vector_containter<T>::type::value_type::first, boost::lambda::_1)
+								) == value);*/
+					for(typename vector_containter<T>::type::const_iterator it = storage.begin(); it != storage.end(); ++it)
+					{
+						if(it->first.value == value)
+						{
+							return it->first;
+						}
+					}
+					assert(false); // TODO: shall we allow looking for not existing nodes?
+				}
 
 				size_t size() const
 				{
@@ -89,7 +114,8 @@ namespace advcpp
 				}
 
 			protected:
-				std::vector<typename node_list_pair<T>::type > storage;
+				//std::vector<typename node_list_pair<T>::type > storage;
+				typename vector_containter<T>::type storage;
 		};
 
 	template<typename T>
@@ -135,13 +161,19 @@ namespace advcpp
 					add(begin_node);
 					add(end_node);
 
-					matrix.at(begin_id).at(end_id) = 1;
-					matrix.at(end_id).at(begin_id) = 1;
+					matrix.at(begin_id).at(end_id) = 1; // perhaps some clever enum?
+					matrix.at(end_id).at(begin_id) = 1; // perhaps some clever enum?
 				}
 
 				void remove(node<T>& begin_node, node<T>& end_node) // remove arc
 				{
 
+				}
+				
+				node<T> get_node(const T& value) const
+				{
+					assert(false);
+					return NULL; // TODO: implement!
 				}
 
 				size_t size() const
@@ -195,6 +227,11 @@ namespace advcpp
 				void remove(node<T>& begin_node, node<T>& end_node) // remove arc
 				{
 					containter.remove(begin_node, end_node);
+				}
+
+				node<T> get_node(const T& value) const
+				{
+					return containter.get_node(value);
 				}
 
 				size_t size() const

@@ -69,13 +69,49 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(AddRemoveNodesTest, T, graph_types)
 	BOOST_REQUIRE_EQUAL(g.size(), 0);
 }
 
+BOOST_AUTO_TEST_CASE_TEMPLATE(FindNodeTest, T, graph_types)
+{
+	node<int> n1(1);
+	node<int> n2(2);
+	node<int> n3(3);
+
+	//T g;
+	list_graph g;
+	g.reserve(3);
+
+	g.add(n1);
+	g.add(n2);
+	g.add(n3);
+
+	BOOST_REQUIRE_EQUAL(g.get_node(3).value, 3);
+	BOOST_REQUIRE_EQUAL(g.get_node(2).value, 2);
+	BOOST_REQUIRE_EQUAL(g.get_node(1).value, 1);
+}
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(AddDuplicateNodesTest, T, graph_types)
+{
+	node<int> n1(1);
+	node<int> n2(1);
+	node<int> n3(1);
+
+	T g;
+	g.reserve(3);
+	BOOST_REQUIRE_EQUAL(g.size(), 0);
+
+	g.add(n1);
+	BOOST_REQUIRE_EQUAL(g.size(), 1);
+	g.add(n2);
+	g.add(n3);
+	BOOST_REQUIRE_EQUAL(g.size(), 1);
+}
+
+
 BOOST_AUTO_TEST_CASE_TEMPLATE(AddArcTest, T, graph_types)
 {
 	node<int> n1(1);
 	node<int> n2(2);
 
 	T g;
-	//graph<int, memory_selector<int, linked_list> > g;
 	g.reserve(2);
 	BOOST_REQUIRE_EQUAL(g.size(), 0);
 
@@ -88,7 +124,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(AddSameNodeAsArcTest, T, graph_types)
 	node<int> n(1);
 
 	T g;
-	//graph<int, memory_selector<int, linked_list> > g;
 	g.reserve(2);
 	BOOST_REQUIRE_EQUAL(g.size(), 0);
 
@@ -96,5 +131,27 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(AddSameNodeAsArcTest, T, graph_types)
 	BOOST_REQUIRE_EQUAL(g.size(), 0);
 }
 
+/*BOOST_AUTO_TEST_CASE_TEMPLATE(DepthFirstSearchTest, T, graph_types)
+{
+	node<int> n1(1);
+	node<int> n2(2);
+	node<int> n3(3);
+	node<int> n4(4);
+	node<int> n5(5);
+
+	//T g;
+	list_graph g;
+	g.reserve(5);
+	BOOST_REQUIRE_EQUAL(g.size(), 0);
+
+	// circle graph
+	g.add(n1, n2);
+	g.add(n2, n3);
+	g.add(n3, n4);
+	g.add(n4, n5);
+	g.add(n5, n1);
+
+	BOOST_REQUIRE_EQUAL(g.size(), 5);
+}*/
 
 
