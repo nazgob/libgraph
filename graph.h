@@ -172,8 +172,14 @@ namespace advcpp
 				
 				node<T> get_node(const T& value) const
 				{
-					assert(false);
-					return NULL; // TODO: implement!
+					for(typename std::vector<node<T> >::const_iterator it = storage.begin(); it != storage.end(); ++it)
+					{
+						if(it->value == value)
+						{
+							return *it;
+						}
+					}
+					assert(false); // TODO: shall we allow looking for not existing nodes?
 				}
 
 				size_t size() const

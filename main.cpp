@@ -75,8 +75,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(FindNodeTest, T, graph_types)
 	node<int> n2(2);
 	node<int> n3(3);
 
-	//T g;
-	list_graph g;
+	T g;
 	g.reserve(3);
 
 	g.add(n1);
