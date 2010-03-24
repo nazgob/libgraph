@@ -2,7 +2,7 @@ OBJS = main.o
 
 CC = g++
 EXEC = graph
-W_FLAGS = -Wall -Wextra -pedantic
+W_FLAGS = -g -Wall -Wextra -pedantic
 
 FLAGS = -I . $(W_FLAGS)
 
