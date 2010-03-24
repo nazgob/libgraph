@@ -129,8 +129,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(AddSameNodeAsArcTest, T, graph_types)
 	g.add(n, n);
 	BOOST_REQUIRE_EQUAL(g.size(), 0);
 }
-
-/*BOOST_AUTO_TEST_CASE_TEMPLATE(DepthFirstSearchTest, T, graph_types)
+/*
+BOOST_AUTO_TEST_CASE_TEMPLATE(DepthFirstSearchTest, T, graph_types)
 {
 	node<int> n1(1);
 	node<int> n2(2);

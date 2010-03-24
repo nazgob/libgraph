@@ -10,7 +10,6 @@
 
 #include <boost/lambda/lambda.hpp>
 #include <boost/lambda/bind.hpp>
-//using namespace boost::lambda;
 
 #include "node.h"
 
@@ -41,8 +40,6 @@ namespace advcpp
 	template<typename T>
 		bool operator==(const typename node_list_pair<T>::type & lhs, const typename node_list_pair<T>::type & rhs)
 		{
-			//std::cout << "comparing pairs = " << lhs.first.id << " " << rhs.first.id << std::endl;
-			//return lhs.first.id == rhs.first.id;
 			return lhs.first.value == rhs.first.value;
 		}
 
@@ -60,7 +57,6 @@ namespace advcpp
 				{
 					std::list<T> tmp_list;
 					typename node_list_pair<T>::type tmp_pair(input_node, tmp_list);
-					//typename node_list_pair<T>::type tmp_pair2(input_node, tmp_list);
 
 					storage.erase(std::remove_if(storage.begin(), storage.end(), boost::lambda::_1 == tmp_pair), storage.end());
 				}
@@ -74,12 +70,6 @@ namespace advcpp
 					add(end_node);
 					storage.at(begin_id).second.push_back(end_id);
 					storage.at(end_id).second.push_back(begin_id);
-
-					/*std::cout << "begin_id = " << begin_id << std::endl;
-					std::cout << "end_id = " << end_id << std::endl;
-					
-					std::cout << storage.at(begin_id).second.front() << std::endl;
-					std::cout << storage.at(end_id).second.front() << std::endl;*/
 				}
 
 				void remove(node<T>& begin_node, node<T>& end_node) // remove arc
@@ -89,10 +79,6 @@ namespace advcpp
 				
 				node<T> get_node(const T& value) const
 				{
-					/*typename vector_containter<T>::type::iterator it = std::find_if(storage.begin(), storage.end(),
-								boost::lambda::bind(&vector_containter<T>::type::value_type::first_value::value,
-								boost::lambda::bind(&vector_containter<T>::type::value_type::first, boost::lambda::_1)
-								) == value);*/
 					for(typename vector_containter<T>::type::const_iterator it = storage.begin(); it != storage.end(); ++it)
 					{
 						if(it->first.value == value)
@@ -114,7 +100,6 @@ namespace advcpp
 				}
 
 			protected:
-				//std::vector<typename node_list_pair<T>::type > storage;
 				typename vector_containter<T>::type storage;
 		};
 
