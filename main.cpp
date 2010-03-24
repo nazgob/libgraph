@@ -15,6 +15,7 @@ typedef graph<int, memory_selector<int, matrix> > matrix_graph;
 
 typedef boost::mpl::list<int, double, size_t> nodes_types;
 typedef boost::mpl::list<matrix_graph, list_graph> graph_types;
+typedef boost::mpl::list<memory_selector<int, linked_list>, memory_selector<int, matrix> > memory_models; 
 
 BOOST_AUTO_TEST_CASE(InstantiateDifferentGraphs)
 {
@@ -69,22 +70,19 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(AddRemoveNodesTest, T, graph_types)
 	BOOST_REQUIRE_EQUAL(g.size(), 0);
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(FindNodeTest, T, graph_types)
+BOOST_AUTO_TEST_CASE_TEMPLATE(FindNodeTest, T, memory_models)
 {
 	node<int> n1(1);
-	node<int> n2(2);
 	node<int> n3(3);
 
 	T g;
-	g.reserve(3);
 
 	g.add(n1);
-	g.add(n2);
 	g.add(n3);
 
-	BOOST_REQUIRE_EQUAL(g.get_node(3).value, 3);
-	BOOST_REQUIRE_EQUAL(g.get_node(2).value, 2);
-	BOOST_REQUIRE_EQUAL(g.get_node(1).value, 1);
+	BOOST_REQUIRE_EQUAL(g.is_node(3), true);
+	BOOST_REQUIRE_EQUAL(g.is_node(2), false);
+	BOOST_REQUIRE_EQUAL(g.is_node(1), true);
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(AddDuplicateNodesTest, T, graph_types)

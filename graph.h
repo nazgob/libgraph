@@ -77,16 +77,16 @@ namespace advcpp
 
 				}
 				
-				node<T> get_node(const T& value) const
+				bool is_node(const T& value) const
 				{
 					for(typename vector_containter<T>::type::const_iterator it = storage.begin(); it != storage.end(); ++it)
 					{
 						if(it->first.value == value)
 						{
-							return it->first;
+							return true;
 						}
 					}
-					assert(false); // TODO: shall we allow looking for not existing nodes?
+					return false;
 				}
 
 				size_t size() const
@@ -134,7 +134,7 @@ namespace advcpp
 				void remove(node<T>& input_node) // remove node
 				{
 					storage.erase(std::remove(storage.begin(), storage.end(), input_node), storage.end());
-					//TODO: what to do with matrix? mark delete row with 0 or some logiacal flag?
+					//TODO: what to do with matrix? mark deleted row with 0 or some logiacal flag?
 				}
 
 
@@ -155,16 +155,16 @@ namespace advcpp
 
 				}
 				
-				node<T> get_node(const T& value) const
+				bool is_node(const T& value) const
 				{
 					for(typename std::vector<node<T> >::const_iterator it = storage.begin(); it != storage.end(); ++it)
 					{
 						if(it->value == value)
 						{
-							return *it;
+							return true;
 						}
 					}
-					assert(false); // TODO: shall we allow looking for not existing nodes?
+					return false;
 				}
 
 				size_t size() const
@@ -220,10 +220,10 @@ namespace advcpp
 					containter.remove(begin_node, end_node);
 				}
 
-				node<T> get_node(const T& value) const
+				/*node<T> get_node(const T& value) const
 				{
 					return containter.get_node(value);
-				}
+				}*/
 
 				size_t size() const
 				{
