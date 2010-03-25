@@ -1,7 +1,7 @@
 #ifndef NODE_H
 #define NODE_H
 
-namespace advcpp
+namespace libgraph
 {
 	template<typename T>
 		class node 
@@ -9,7 +9,6 @@ namespace advcpp
 			public:
 				explicit node(const T& input) : value(input), id(0) // does this explicit works / is neccesery?
 			{
-				//id = ++nextId;
 			}
 
 				bool operator==(const node<T>& n) const
@@ -24,13 +23,8 @@ namespace advcpp
 
 				T value;
 				size_t id;
-
-			protected:
-				//static int nextId;
 		};
-
-	//template<typename T> int node<T>::nextId = 0;
-}
+} // namespace libgraph
 
 #endif // NODE_H
 

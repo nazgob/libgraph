@@ -13,7 +13,7 @@
 
 #include "node.h"
 
-namespace advcpp
+namespace libgraph
 {
 	enum memory {linked_list, matrix};
 
@@ -275,8 +275,6 @@ namespace advcpp
 						return;
 					}
 
-					//begin_node.id = id++;
-					//end_node.id = id++;
 					containter.add(begin_node, end_node);
 				}
 
@@ -305,7 +303,7 @@ namespace advcpp
 				//size_t id;
 				Memory containter;
 		};
-} // namespace advcpp
+} // namespace libgraph
 
 #endif // GRAPH_H
 

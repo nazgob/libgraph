@@ -1,14 +1,15 @@
-#define BOOST_TEST_MODULE graph main_tests
+#define BOOST_TEST_MODULE libgraph main_tests
 #include <boost/test/included/unit_test.hpp>
 #include <boost/test/test_case_template.hpp>
 #include <boost/mpl/list.hpp>
 
-#include "graph.h"
 #include "node.h"
+#include "graph.h"
+#include "search.h"
 
 #include <vector>
 
-using namespace advcpp;
+using namespace libgraph;
 
 typedef graph<int, memory_selector<int, linked_list> > list_graph;
 typedef graph<int, memory_selector<int, matrix> > matrix_graph;
@@ -167,6 +168,10 @@ BOOST_AUTO_TEST_CASE(DepthFirstSearchTest)
 	g.add(n4, n5);
 	g.add(n5, n1);
 
-	//BOOST_REQUIRE_EQUAL(g.size(), 5);
+	BOOST_REQUIRE_EQUAL(g.size(), 5);
+
+	search_graph<int> s(g);
+	s.search(n1);
+
 }
 
