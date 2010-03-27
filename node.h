@@ -7,7 +7,7 @@ namespace libgraph
 		class node 
 		{
 			public:
-				explicit node(const T& input) : value(input), id(0) // does this explicit works / is neccesery?
+				node(const T& input) : value(input), id(0) 
 			{
 			}
 

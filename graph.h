@@ -283,11 +283,6 @@ namespace libgraph
 					containter.remove(begin_node, end_node);
 				}
 
-				/*node<T> get_node(const T& value) const
-				{
-					return containter.get_node(value);
-				}*/
-
 				size_t size() const
 				{
 					return containter.size();
@@ -296,6 +291,11 @@ namespace libgraph
 				void reserve(size_t size)
 				{
 					containter.reserve(size);
+				}
+
+				const Memory& get_memory() const
+				{
+					return containter;
 				}
 
 

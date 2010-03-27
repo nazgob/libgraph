@@ -7,6 +7,8 @@
 #include "graph.h"
 #include "search.h"
 
+#include <queue>
+#include <stack>
 #include <vector>
 
 using namespace libgraph;
@@ -170,7 +172,7 @@ BOOST_AUTO_TEST_CASE(DepthFirstSearchTest)
 
 	BOOST_REQUIRE_EQUAL(g.size(), 5);
 
-	search_graph<int> s(g);
+	search_graph<int, std::stack<int>, memory_selector<int, linked_list> > s(g);
 	s.search(n1);
 
 }
