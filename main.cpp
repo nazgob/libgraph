@@ -1,24 +1,17 @@
 #define BOOST_TEST_MODULE libgraph main_tests
 #include <boost/test/included/unit_test.hpp>
 #include <boost/test/test_case_template.hpp>
-#include <boost/mpl/list.hpp>
 
 #include "node.h"
 #include "graph.h"
 #include "search.h"
+#include "types.h"
 
 //#include <queue>
 #include <stack>
 #include <vector>
 
 using namespace libgraph;
-
-typedef graph<int, graph_memory_model<int, linked_list> > list_graph;
-typedef graph<int, graph_memory_model<int, matrix> > matrix_graph;
-
-typedef boost::mpl::list<int, double, size_t> nodes_types;
-typedef boost::mpl::list<matrix_graph, list_graph> graph_types;
-typedef boost::mpl::list<graph_memory_model<int, linked_list>, graph_memory_model<int, matrix> > memory_models; 
 
 BOOST_AUTO_TEST_CASE(InstantiateDifferentGraphs)
 {
