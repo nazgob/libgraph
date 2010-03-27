@@ -7,24 +7,24 @@
 #include "graph.h"
 #include "search.h"
 
-#include <queue>
+//#include <queue>
 #include <stack>
 #include <vector>
 
 using namespace libgraph;
 
-typedef graph<int, memory_selector<int, linked_list> > list_graph;
-typedef graph<int, memory_selector<int, matrix> > matrix_graph;
+typedef graph<int, graph_memory_model<int, linked_list> > list_graph;
+typedef graph<int, graph_memory_model<int, matrix> > matrix_graph;
 
 typedef boost::mpl::list<int, double, size_t> nodes_types;
 typedef boost::mpl::list<matrix_graph, list_graph> graph_types;
-typedef boost::mpl::list<memory_selector<int, linked_list>, memory_selector<int, matrix> > memory_models; 
+typedef boost::mpl::list<graph_memory_model<int, linked_list>, graph_memory_model<int, matrix> > memory_models; 
 
 BOOST_AUTO_TEST_CASE(InstantiateDifferentGraphs)
 {
 	graph<long> g;
-	graph<int, memory_selector<int, linked_list> > g1;
-	graph<double, memory_selector<double, matrix> > g2;
+	graph<int, graph_memory_model<int, linked_list> > g1;
+	graph<double, graph_memory_model<double, matrix> > g2;
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(NodesEqualityTest, T, nodes_types)
@@ -97,7 +97,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(GetNodeIdTest, T, memory_models)
 	BOOST_REQUIRE_EQUAL(n3.id, 0);
 	
 	//T g;
-	memory_selector<int, linked_list> m;
+	graph_memory_model<int, linked_list> m;
 
 	m.add(n1);
 	m.add(n3);
@@ -172,8 +172,7 @@ BOOST_AUTO_TEST_CASE(DepthFirstSearchTest)
 
 	BOOST_REQUIRE_EQUAL(g.size(), 5);
 
-	search_graph<int, std::stack<int>, memory_selector<int, linked_list> > s(g);
+	search_graph<int, std::stack<int> > s(g);
 	s.search(n1);
-
 }
 

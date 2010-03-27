@@ -18,7 +18,7 @@ namespace libgraph
 	enum memory {linked_list, matrix};
 
 	template<typename T, memory>
-		class memory_selector
+		class graph_memory_model
 		{
 		};
 
@@ -44,10 +44,10 @@ namespace libgraph
 		}
 
 	template<typename T>
-		class memory_selector<T, linked_list>
+		class graph_memory_model<T, linked_list>
 		{
 			public:
-				memory_selector<T, linked_list>() : id(0)
+				graph_memory_model<T, linked_list>() : id(0)
 				{
 				}
 
@@ -155,10 +155,10 @@ namespace libgraph
 		};
 
 	template<typename T>
-		class memory_selector<T, matrix>
+		class graph_memory_model<T, matrix>
 		{
 			public:
-				memory_selector<T, matrix>() : id(0)
+				graph_memory_model<T, matrix>() : id(0)
 				{
 				}
 
@@ -248,7 +248,7 @@ namespace libgraph
 				size_t id;
 		};
 
-	template<typename T, typename Memory = memory_selector<T, matrix> >
+	template<typename T, typename Memory = graph_memory_model<T, matrix> >
 		class graph
 		{
 			public:
@@ -300,7 +300,6 @@ namespace libgraph
 
 
 			protected:
-				//size_t id;
 				Memory containter;
 		};
 } // namespace libgraph

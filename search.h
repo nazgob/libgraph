@@ -10,20 +10,20 @@
 
 namespace libgraph 
 {	
-	template<typename T, typename search_memory_model, typename graph_memory_model>
+	template<typename T, typename search_memory_model>
 		class search_graph
 		{
 			public:
-				search_graph(const graph<int, memory_selector<int, linked_list> >& g) : searchable_graph(g)
-			{
-			}
+				search_graph(graph<int, graph_memory_model<int, linked_list> > g) : searchable_graph(g)
+				{
+				}
 
 				bool search(node<T> node)
 				{
 					// for every node in collection from graph g
 					// if node is on not on visited list
 					// visit DFS
-					graph_memory_model model = searchable_graph.get_memory();
+					//graph_memory_model model = searchable_graph.get_memory();
 
 					/*for(typename graph_memory_model::const_iterator it = model.begin(); it != model.end(); ++it)
 					{
@@ -44,7 +44,7 @@ namespace libgraph
 			private:
 				std::vector<T> visited;
 				std::vector<T> storage; // stack or fifo
-				graph<int, memory_selector<int, linked_list> > searchable_graph;
+				graph<int, graph_memory_model<int, linked_list> > searchable_graph;
 		};
 
 } // namespace libgraph
