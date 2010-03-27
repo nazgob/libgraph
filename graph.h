@@ -1,10 +1,12 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
-#include <iostream>
 #include <vector>
-#include <algorithm>
+#include <stack>
 #include <list>
+
+#include <iostream>
+#include <algorithm>
 #include <utility>
 #include <cassert>
 
@@ -12,6 +14,7 @@
 #include <boost/lambda/bind.hpp>
 
 #include "node.h"
+
 
 namespace libgraph
 {
@@ -149,7 +152,7 @@ namespace libgraph
 					storage.reserve(size);
 				}
 
-			protected:
+			//protected:
 				typename vector_containter<T>::type storage;
 				size_t id;
 		};

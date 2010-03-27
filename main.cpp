@@ -165,7 +165,7 @@ BOOST_AUTO_TEST_CASE(DepthFirstSearchTest)
 
 	BOOST_REQUIRE_EQUAL(g.size(), 5);
 
-	search_graph<int, std::stack<int> > s(g);
+	search_graph<int, std::stack<int>, list_graph_memory_model > s(g);
 	s.search(n1);
 }
 
