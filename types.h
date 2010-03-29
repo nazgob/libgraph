@@ -5,7 +5,7 @@
 
 #include "node.h"
 #include "graph.h"
-#include "search.h"
+//#include "search.h"
 
 
 namespace libgraph 
