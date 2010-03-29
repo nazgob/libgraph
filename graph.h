@@ -54,6 +54,17 @@ namespace libgraph
 				{
 				}
 
+				typedef typename vector_containter<T>::type::const_iterator const_iterator;
+
+				const_iterator begin() const
+				{
+					return storage.begin();
+				}
+				const_iterator end() const
+				{
+					return storage.end();
+				}
+
 				void add(node<T>& input_node) // add node
 				{
 					if(!is_node(input_node.value))
