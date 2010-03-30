@@ -10,8 +10,7 @@
 #include <utility>
 #include <cassert>
 
-#include <boost/lambda/lambda.hpp>
-#include <boost/lambda/bind.hpp>
+#include <boost/shared_ptr.hpp>
 
 #include "node.h"
 
@@ -26,27 +25,6 @@ namespace libgraph
 		};
 
 	template<typename T>
-		class node_list_pair // idiom to have templated typedef
-		{
-			public:
-				typedef std::pair<node<T>, std::list<T> > type;
-		};
-
-	template<typename T>
-		class vector_containter // idiom to have templated typedef
-		{
-			public:
-				typedef std::vector<typename node_list_pair<T>::type > type;
-		};
-
-
-	template<typename T>
-		bool operator==(const typename node_list_pair<T>::type & lhs, const typename node_list_pair<T>::type & rhs)
-		{
-			return lhs.first.value == rhs.first.value;
-		}
-
-	template<typename T>
 		class graph_memory_model<T, linked_list>
 		{
 			public:
@@ -54,38 +32,71 @@ namespace libgraph
 				{
 				}
 
-				void add(node<T>& input_node) // add node
+				boost::shared_ptr<node<T> > is_node(const T& value) const
 				{
-
-				}
-
-				void add(node<T>& begin_node, node<T>& end_node) // add arc
-				{
-
-				}
-
-				bool is_node(const T& value) const
-				{
-					for(typename vector_containter<T>::type::const_iterator it = storage.begin(); it != storage.end(); ++it)
+					std::cout << "searching for value: " << value << std::endl;
+					for(typename std::vector<node_ptr>::const_iterator it = storage.begin(); it != storage.end(); ++it)
 					{
-						if(it->first.value == value)
+						if((*it)->value == value)
 						{
-							return true;
+							std::cout << "found it!" << std::endl;
+							return *it;
 						}
 					}
-					return false;
+					std::cout << "can't find it!" << std::endl;
+					return node_ptr(new node<T>(NULL, true)); // NULL object idiom
 				}
 
-				T get_node_id(const T& value) const
+				void add(const T& begin_node, const T& end_node) // add arc
 				{
-					for(typename vector_containter<T>::type::const_iterator it = storage.begin(); it != storage.end(); ++it)
+					std::cout << "add() = " << begin_node << " " << end_node << std::endl;
+					if(begin_node == end_node)
 					{
-						if(it->first.value == value)
-						{
-							return it->first.id;
-						}
+						std::cout << "same node! nothing added!" << std::endl;
+						return;
 					}
-				}
+
+					size_t aId = 0;
+					size_t bId = 0;
+
+					node_ptr aTestResult = is_node(begin_node);
+					if(aTestResult.get()->is_null())
+					{
+						node_ptr pNode = node_ptr(new node<T>(begin_node));
+						std::cout << "adding begin_node with id = " << pNode->id << std::endl;
+						aId = pNode->id;
+						storage.push_back(pNode);
+						adjectedListsVec.push_back(list_ptr(new std::list<T>));
+					}
+					else
+					{
+						std::cout << "begin_node exists, getting id" << std::endl;
+						aId = aTestResult->id;
+					}
+
+					node_ptr bTestResult = is_node(end_node);
+					if(bTestResult.get()->is_null())
+					{
+						node_ptr pNode = node_ptr(new node<T>(end_node));
+						std::cout << "adding end_node with id = " << pNode->id << std::endl;
+						bId = pNode->id;
+						storage.push_back(pNode);
+						adjectedListsVec.push_back(list_ptr(new std::list<T>));
+					}
+					else
+					{
+						std::cout << "end_node exists, getting id" << std::endl;
+						bId = bTestResult->id;
+					}
+
+					//adjectedListsVec[aId]->push_back(bId);
+					//adjectedListsVec[aId]->unique();
+
+					//adjectedListsVec[bId]->push_back(aId);
+					//adjectedListsVec[bId]->unique();
+
+					//assert(storage.size() == adjectedListsVec.size());
+				}	
 
 				size_t size() const
 				{
@@ -98,7 +109,11 @@ namespace libgraph
 				}
 
 			protected:
-				typename vector_containter<T>::type storage;
+				typedef boost::shared_ptr<node<T> > node_ptr;
+				std::vector<node_ptr> storage;
+
+				typedef boost::shared_ptr<std::list<T> > list_ptr;
+				std::vector<list_ptr> adjectedListsVec;
 		};
 
 	template<typename T>
@@ -109,62 +124,15 @@ namespace libgraph
 				{
 				}
 
-				void add(node<T>& input_node) // add node
+				void add(const T& begin_node, const T& end_node) // add arc
 				{
-
-					if(!is_node(input_node.value))
-					{
-						//input_node.id = id++;
-						storage.push_back(input_node);
-						std::vector<int> row(matrix2D.size());
-						matrix2D.push_back(row);
-
-						for(std::vector<std::vector<int> >::iterator it = matrix2D.begin();
-								it != matrix2D.end();
-								++it)
-						{
-							(*it).push_back(0);
-						}
-
-						// TODO: make propper tests for that and get rid of this assert
-						assert(storage.size() == matrix2D.size());
-						for(std::vector<std::vector<int> >::iterator it = matrix2D.begin();
-								it != matrix2D.end();
-								++it)
-						{
-							assert((*it).size() == storage.size());
-						}
-					}
-
+					assert(false);
 				}
 
-
-				void add(node<T>& begin_node, node<T>& end_node) // add arc
+				node<T>* is_node(const T& value) const
 				{
-					//begin_node.id = id++;
-					//end_node.id = id++;
-
-					// TODO: ids are messed up seriously / check adding existing nodes as arcs
-					//size_t begin_id = begin_node.id;
-					//size_t end_id = end_node.id;
-
-					add(begin_node);
-					add(end_node);
-
-					//matrix2D.at(begin_id).at(end_id) = 1; // perhaps some clever enum?
-					//matrix2D.at(end_id).at(begin_id) = 1; // perhaps some clever enum?
-				}
-
-				bool is_node(const T& value) const
-				{
-					for(typename std::vector<node<T> >::const_iterator it = storage.begin(); it != storage.end(); ++it)
-					{
-						if(it->value == value)
-						{
-							return true;
-						}
-					}
-					return false;
+					assert(false);
+					return NULL;
 				}
 
 				size_t size() const
@@ -191,34 +159,33 @@ namespace libgraph
 				{
 				}
 
-				void add(node<T>& begin_node, node<T>& end_node) // add arc
+				void add(const T& begin_node, const T& end_node) // add arc
 				{
-					if(begin_node == end_node)
-					{
-						// pass
-						return;
-					}
+					container.add(begin_node, end_node);
+				}
 
-					containter.add(begin_node, end_node);
+				node<T>* is_node(const T& value) const
+				{
+					return container.is_node(value);
 				}
 
 				size_t size() const
 				{
-					return containter.size();
+					return container.size();
 				}
 
 				void reserve(size_t size)
 				{
-					containter.reserve(size);
+					container.reserve(size);
 				}
 
 				const Memory& get_memory() const
 				{
-					return containter;
+					return container;
 				}
 
 			protected:
-				Memory containter;
+				Memory container;
 		};
 } // namespace libgraph
 

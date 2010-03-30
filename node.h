@@ -7,9 +7,17 @@ namespace libgraph
 		class node 
 		{
 			public:
-				node(const T& input) : value(input)
+				node(const T& input, bool nullity = false) : value(input)
 			{
-				id = counter++; // counting from 0 is handy in C++
+				if(false == nullity)
+				{
+					id = counter++; // counting from 0 is handy in C++
+					//std::cout << "creating node with id = " << id << std::endl;
+				}
+				else
+				{
+					null = true;
+				}
 			}
 				static void reset()
 				{
@@ -26,14 +34,25 @@ namespace libgraph
 					return (value != n.value) || (id != n.id);
 				}
 
+				bool is_null() const
+				{
+					return null;
+				}
+
 				T value;
 				size_t id;
+
 			private:
+				node& operator = (const node& other) { /*..*/}
+				node(const node& other) {/*..*/}
+
+				bool null;
 				static size_t counter;
 		};
 
 	template<typename T>
-	size_t node<T>::counter = 0;
+		size_t node<T>::counter = 0;
+
 } // namespace libgraph
 
 #endif // NODE_H

@@ -7,7 +7,7 @@ W_FLAGS = -g -Wall -Wextra -pedantic
 FLAGS = -I . $(W_FLAGS)
 
 %.o : %.c
-	$(CC) $(FLAGS) -c $<
+	$(CC) $(FLAGS) -g -c $<
 
 main: $(OBJS)
 	@echo "Building $(EXEC)"
