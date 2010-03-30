@@ -132,7 +132,6 @@ namespace libgraph
 				}
 
 				boost::shared_ptr<node<T> > is_node(const T& value) const
-				//node<T>* is_node(const T& value) const
 				{
 					return node_ptr(new node<T>(NULL, true)); // NULL object idiom
 				}
@@ -167,7 +166,6 @@ namespace libgraph
 				}
 
 				boost::shared_ptr<node<T> > is_node(const T& value) const
-				//node<T>* is_node(const T& value) const
 				{
 					return container.is_node(value);
 				}

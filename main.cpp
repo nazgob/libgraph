@@ -2,14 +2,14 @@
 #include <boost/test/included/unit_test.hpp>
 #include <boost/test/test_case_template.hpp>
 
-#include "node.h"
-#include "graph.h"
-//#include "search.h"
-#include "types.h"
-
 //#include <queue>
 #include <stack>
 #include <vector>
+
+#include "node.h"
+#include "graph.h"
+#include "search.h"
+#include "types.h"
 
 using namespace libgraph;
 
@@ -97,32 +97,23 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsNodeTest, T, graph_types)
 	BOOST_REQUIRE(g.is_node(7).get()->is_null() == true);
 }
 
-//BOOST_AUTO_TEST_CASE_TEMPLATE(DepthFirstSearchTest, T, graph_types)
-/*BOOST_AUTO_TEST_CASE(DepthFirstSearchTest)
-  {
-  node<int> n1(1);
-  node<int> n2(2);
-  node<int> n3(3);
-  node<int> n4(4);
-  node<int> n5(5);
+BOOST_AUTO_TEST_CASE_TEMPLATE(DepthFirstSearchTest, T, graph_types)
+{
+	node<int>::reset();
+	
+	T g;
+	BOOST_REQUIRE_EQUAL(g.size(), 0);
 
-//T g;
-list_graph g;
-g.reserve(5);
-BOOST_REQUIRE_EQUAL(g.size(), 0);
+	// circle graph
+	g.add(1, 2);
+	g.add(2, 3);
+	g.add(3, 4);
+	g.add(5, 5);
+	g.add(5, 1);
 
-// circle graph
-g.add(n1, n2);
-g.add(n2, n3);
-g.add(n3, n4);
-g.add(n4, n5);
-g.add(n5, n1);
+	BOOST_REQUIRE_EQUAL(g.size(), 5);
 
-BOOST_REQUIRE_EQUAL(g.size(), 5);
-
-search_graph<int, std::stack<int>, list_graph_memory_model > s(g);
-s.search(n1);
-
-node<T>::reset();
-}*/
+	//search_graph<int, std::stack<int>, list_graph_memory_model > s(g);
+	//s.search(n1);
+}
 
