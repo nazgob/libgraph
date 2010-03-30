@@ -49,23 +49,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(NodesIdTest, T, nodes_types)
 	BOOST_REQUIRE_EQUAL(n3.id, 2);
 }
 
-/*BOOST_AUTO_TEST_CASE_TEMPLATE(FindNodeTest, T, memory_models)
-  {
-  node<int> n1(1);
-  node<int> n3(3);
-
-  T g;
-
-  g.add(n1);
-  g.add(n3);
-
-  BOOST_REQUIRE_EQUAL(g.is_node(3), true);
-  BOOST_REQUIRE_EQUAL(g.is_node(2), false);
-  BOOST_REQUIRE_EQUAL(g.is_node(1), true);
-
-  node<T>::reset();
-  }*/
-
 BOOST_AUTO_TEST_CASE_TEMPLATE(AddArcTest, T, graph_types)
 {
 	node<int>::reset();
@@ -83,19 +66,16 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(AddArcTest, T, graph_types)
 	BOOST_REQUIRE_EQUAL(g.size(), 3);
 }
 
-/*BOOST_AUTO_TEST_CASE_TEMPLATE(AddSameValuesAsArcTest, T, graph_types)
+BOOST_AUTO_TEST_CASE_TEMPLATE(AddSameValuesAsArcTest, T, graph_types)
 {
-	std::cout << "----------------" << std::endl;
-
-	node<T>::reset();
+	node<int>::reset();
 
 	T g;
 	BOOST_REQUIRE_EQUAL(g.size(), 0);
 
 	g.add(1, 1);
 	BOOST_REQUIRE_EQUAL(g.size(), 0);
-}*/
-
+}
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(IsNodeTest, T, graph_types)
 {
@@ -116,19 +96,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsNodeTest, T, graph_types)
 	BOOST_REQUIRE(g.is_node(6).get()->is_null() == true);
 	BOOST_REQUIRE(g.is_node(7).get()->is_null() == true);
 }
-
-
-/*BOOST_AUTO_TEST_CASE_TEMPLATE(AddSameNodeAsArcTest, T, graph_types)
-  {
-  T g;
-  g.reserve(2);
-  BOOST_REQUIRE_EQUAL(g.size(), 0);
-
-  g.add(1, 1);
-  BOOST_REQUIRE_EQUAL(g.size(), 0);
-
-  node<T>::reset();
-  }*/
 
 //BOOST_AUTO_TEST_CASE_TEMPLATE(DepthFirstSearchTest, T, graph_types)
 /*BOOST_AUTO_TEST_CASE(DepthFirstSearchTest)
