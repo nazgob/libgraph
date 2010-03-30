@@ -68,7 +68,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(NodesIdTest, T, nodes_types)
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(AddArcTest, T, graph_types)
 {
-	std::cout << "----------------" << std::endl;
 	node<int>::reset();
 
 	T g;
@@ -79,8 +78,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(AddArcTest, T, graph_types)
 
 	g.add(2, 3);
 	BOOST_REQUIRE_EQUAL(g.size(), 3);
-
-	std::cout << "WWWWWWWWWWWWWWWWw" << std::endl;
 
 	g.add(3, 2);
 	BOOST_REQUIRE_EQUAL(g.size(), 3);
@@ -100,11 +97,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(AddArcTest, T, graph_types)
 }*/
 
 
-/*BOOST_AUTO_TEST_CASE_TEMPLATE(IsNodeTest, T, graph_types)
+BOOST_AUTO_TEST_CASE_TEMPLATE(IsNodeTest, T, graph_types)
 {
-	std::cout << "----------------" << std::endl;
-	
-	node<T>::reset();
+	node<int>::reset();
 
 	T g;
 	BOOST_REQUIRE_EQUAL(g.size(), 0);
@@ -113,8 +108,14 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(AddArcTest, T, graph_types)
 	g.add(3, 1);
 	BOOST_REQUIRE_EQUAL(g.size(), 3);
 
-	//is_node
-}*/
+	BOOST_REQUIRE(g.is_node(1).get()->is_null() == false);
+	BOOST_REQUIRE(g.is_node(2).get()->is_null() == false);
+	BOOST_REQUIRE(g.is_node(3).get()->is_null() == false);
+
+	BOOST_REQUIRE(g.is_node(5).get()->is_null() == true);
+	BOOST_REQUIRE(g.is_node(6).get()->is_null() == true);
+	BOOST_REQUIRE(g.is_node(7).get()->is_null() == true);
+}
 
 
 /*BOOST_AUTO_TEST_CASE_TEMPLATE(AddSameNodeAsArcTest, T, graph_types)
