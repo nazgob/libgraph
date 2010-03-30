@@ -65,6 +65,7 @@ namespace libgraph
 						node_ptr pNode = node_ptr(new node<T>(begin_node));
 						std::cout << "adding begin_node with id = " << pNode->id << std::endl;
 						aId = pNode->id;
+						pNode->null = false;
 						storage.push_back(pNode);
 						adjectedListsVec.push_back(list_ptr(new std::list<T>));
 					}
@@ -80,6 +81,7 @@ namespace libgraph
 						node_ptr pNode = node_ptr(new node<T>(end_node));
 						std::cout << "adding end_node with id = " << pNode->id << std::endl;
 						bId = pNode->id;
+						pNode->null = false;
 						storage.push_back(pNode);
 						adjectedListsVec.push_back(list_ptr(new std::list<T>));
 					}

@@ -41,12 +41,11 @@ namespace libgraph
 
 				T value;
 				size_t id;
-
-			private:
-				node& operator = (const node& other) { /*..*/}
-				node(const node& other) {/*..*/}
-
 				bool null;
+			private:
+				node& operator = (const node& other) {}
+				node(const node& other) {}
+
 				static size_t counter;
 		};
 
