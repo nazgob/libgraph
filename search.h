@@ -31,11 +31,8 @@ namespace libgraph
 					goal = seeked_value;
 					for(typename std::vector<node_ptr>::const_iterator it = storage.begin(); it != storage.end(); ++it)
 					{
-						std::cout << std::endl;
-						std::cout << "searching for goal, got = " << (*it)->value << std::endl;
 						if(visitDFS(*it) == true)
 						{
-							std::cout <<  "got true, returning with glory!" << std::endl;
 							return true;
 						}
 					}
@@ -66,22 +63,24 @@ namespace libgraph
 
 				bool visitDFS(boost::shared_ptr<node<T> > node) 
 				{
+					search_status = false;
 					if(closed.find(node->id) == closed.end())
 					{
-						std::cout << "node->id not in closed list = " << node->id << std::endl;
+						//std::cout << "node->id not in closed list = " << node->id << std::endl;
 						closed.insert(node->id);
 						search_path.push_back(node->id);
 
 						if(node->value == goal)
 						{
-							std::cout << "found goal! node-> value == " <<  node->value << std::endl;
+							//std::cout << "found goal! node-> value == " <<  node->value << std::endl;
+							search_status = true;
 							return true;
 						}
 
 						std::list<T> tmp_list = *(adjectedListsVec[node->id].get());
 						for(typename std::list<T>::const_iterator it = tmp_list.begin(); it != tmp_list.end(); ++it)
 						{
-							std::cout << "inserting adj_list ids to stack!" << std::endl;
+							//std::cout << "inserting adj_list ids to stack!" << std::endl;
 							open.push(*it);
 						}
 						
@@ -90,8 +89,12 @@ namespace libgraph
 
 						visitDFS(storage[tmp_id]);
 					}
-
-					std::cout << "node->id is on closed list = " << node->id << std::endl;
+					if(search_status == true)
+					{
+						//std::cout << "search_status == true, return!"<< std::endl;
+						return true;
+					}
+					//std::cout << "node->id is on closed list = " << node->id << std::endl;
 					return false;
 				}
 
@@ -102,6 +105,7 @@ namespace libgraph
 				typedef boost::shared_ptr<std::list<T> > list_ptr;
 				std::vector<list_ptr> adjectedListsVec;
 
+				bool search_status;
 				T goal;
 				std::set<T> closed;
 				std::stack<T> open; // stack or fifo, to be injected as type
