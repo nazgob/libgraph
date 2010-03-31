@@ -20,26 +20,85 @@ namespace libgraph
 		class search_graph
 		{
 			public:
-				search_graph(const list_graph& g) : searchable_graph(g)
+				search_graph(const list_graph& g)
 			{
+				storage = g.get_memory().storage;
+				adjectedListsVec = g.get_memory().adjectedListsVec;
 			}
 
 				bool search(T start_node_value, T seeked_value)
 				{
+					goal = seeked_value;
+					for(typename std::vector<node_ptr>::const_iterator it = storage.begin(); it != storage.end(); ++it)
+					{
+						if(visitDFS(*it) == true)
+						{
+							return true;
+						}
+					}
+					reset();
 					return false;
+				}
+				
+				void reset()
+				{
+					closed.clear();
+					search_path.clear();
+					
+					while (!open.empty())
+					{
+						open.pop(); // stack does not have a clear method...
+					}
+
+					search_path.clear();
 				}
 
 			protected:
 
 				bool visitDFS(boost::shared_ptr<node<T> > node) 
 				{
+					if(closed.find(node->id) == closed.end())
+					{
+						closed.insert(node->id);
+						search_path.push_back(node->id);
 
+						if(node->value == goal)
+						{
+							return true;
+						}
+
+						//list_ptr tmp_list = adjectedListsVec[node->id];
+						std::list<T> tmp_list = *(adjectedListsVec[node->id].get());
+						for(typename std::list<T>::const_iterator it = tmp_list.begin(); it != tmp_list.end(); ++it)
+						{
+							open.push(*it);
+						}
+						
+						size_t tmp_id = open.top();
+						open.pop();
+
+						visitDFS(storage[tmp_id]);
+					}
+
+					return false;
+				}
+
+				void display_search_path() const
+				{
+					std::copy(search_path.begin(), search_path.end(), std::ostream_iterator<T>(std::cout, " "));
 				}
 
 			private:
-				std::vector<T> visited;
-				std::vector<T> storage; // stack or fifo
-				list_graph searchable_graph;
+				typedef boost::shared_ptr<node<T> > node_ptr;
+				std::vector<node_ptr> storage;
+
+				typedef boost::shared_ptr<std::list<T> > list_ptr;
+				std::vector<list_ptr> adjectedListsVec;
+
+				T goal;
+				std::set<T> closed;
+				std::stack<T> open; // stack or fifo, to be injected as type
+				std::vector<T> search_path;
 		};
 
 } // namespace libgraph

@@ -110,7 +110,7 @@ namespace libgraph
 					storage.reserve(size);
 				}
 
-			protected:
+			//protected:
 				typedef boost::shared_ptr<node<T> > node_ptr;
 				std::vector<node_ptr> storage;
 
