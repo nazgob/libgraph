@@ -8,7 +8,7 @@
 #include <algorithm>
 
 #include <boost/shared_ptr.hpp>
-#include <boost/lambda/lambda.hpp>
+//#include <boost/lambda/lambda.hpp>
 
 #include "types.h"
 #include "graph.h"
@@ -31,8 +31,11 @@ namespace libgraph
 					goal = seeked_value;
 					for(typename std::vector<node_ptr>::const_iterator it = storage.begin(); it != storage.end(); ++it)
 					{
+						std::cout << std::endl;
+						std::cout << "searching for goal, got = " << (*it)->value << std::endl;
 						if(visitDFS(*it) == true)
 						{
+							std::cout <<  "got true, returning with glory!" << std::endl;
 							return true;
 						}
 					}
@@ -40,6 +43,12 @@ namespace libgraph
 					return false;
 				}
 				
+				void display_search_path() const
+				{
+					std::copy(search_path.begin(), search_path.end(), std::ostream_iterator<T>(std::cout, " -> "));
+					std::cout << std::endl;
+				}
+
 				void reset()
 				{
 					closed.clear();
@@ -59,18 +68,20 @@ namespace libgraph
 				{
 					if(closed.find(node->id) == closed.end())
 					{
+						std::cout << "node->id not in closed list = " << node->id << std::endl;
 						closed.insert(node->id);
 						search_path.push_back(node->id);
 
 						if(node->value == goal)
 						{
+							std::cout << "found goal! node-> value == " <<  node->value << std::endl;
 							return true;
 						}
 
-						//list_ptr tmp_list = adjectedListsVec[node->id];
 						std::list<T> tmp_list = *(adjectedListsVec[node->id].get());
 						for(typename std::list<T>::const_iterator it = tmp_list.begin(); it != tmp_list.end(); ++it)
 						{
+							std::cout << "inserting adj_list ids to stack!" << std::endl;
 							open.push(*it);
 						}
 						
@@ -80,12 +91,8 @@ namespace libgraph
 						visitDFS(storage[tmp_id]);
 					}
 
+					std::cout << "node->id is on closed list = " << node->id << std::endl;
 					return false;
-				}
-
-				void display_search_path() const
-				{
-					std::copy(search_path.begin(), search_path.end(), std::ostream_iterator<T>(std::cout, " "));
 				}
 
 			private:
