@@ -21,10 +21,10 @@ namespace libgraph
 		{
 			public:
 				search_graph(const list_graph& g)
-			{
-				storage = g.get_memory().storage;
-				adjectedListsVec = g.get_memory().adjectedListsVec;
-			}
+				{
+					storage = g.get_memory().storage;
+					adjectedListsVec = g.get_memory().adjectedListsVec;
+				}
 
 				bool search(T start_node_value, T seeked_value)
 				{
@@ -39,7 +39,7 @@ namespace libgraph
 					reset();
 					return false;
 				}
-				
+
 				void display_search_path() const
 				{
 					std::copy(search_path.begin(), search_path.end(), std::ostream_iterator<T>(std::cout, " -> "));
@@ -50,7 +50,7 @@ namespace libgraph
 				{
 					closed.clear();
 					search_path.clear();
-					
+
 					while (!open.empty())
 					{
 						open.pop(); // stack does not have a clear method...
@@ -83,7 +83,7 @@ namespace libgraph
 							//std::cout << "inserting adj_list ids to stack!" << std::endl;
 							open.push(*it);
 						}
-						
+
 						size_t tmp_id = open.top();
 						open.pop();
 

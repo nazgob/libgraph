@@ -100,7 +100,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsNodeTest, T, graph_types)
 BOOST_AUTO_TEST_CASE_TEMPLATE(DepthFirstSearchTest, T, graph_types)
 {
 	node<int>::reset();
-	
+
 	T g;
 	BOOST_REQUIRE_EQUAL(g.size(), 0);
 
@@ -115,34 +115,32 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(DepthFirstSearchTest, T, graph_types)
 	search_graph<int, std::stack<int>, list_graph_memory_model > s(g);
 	BOOST_REQUIRE(s.search(1, 10) == false);
 	s.reset();
-	
+
 	BOOST_REQUIRE(s.search(1, 7) == false);
 	s.reset();
 
 	BOOST_REQUIRE(s.search(1, -5) == false);
 	s.reset();
-	
+
 	BOOST_REQUIRE(s.search(1, -10) == false);
 	s.reset();
-	
+
 	BOOST_REQUIRE(s.search(1, 100) == false);
 	s.reset();
-	
+
 	BOOST_REQUIRE(s.search(1, 1) == true);
 	s.reset();
-	
+
 	BOOST_REQUIRE(s.search(1, 2) == true);
 	s.reset();
-	
-	//BOOST_REQUIRE(s.search(1, 3) == true);
-	/*s.search(1, 3);
-	s.display_search_path();*/
+
+	BOOST_REQUIRE(s.search(1, 3) == true);
 	s.reset();
-	
-	//BOOST_REQUIRE(s.search(1, 4) == true);
+
+	BOOST_REQUIRE(s.search(1, 4) == true);
 	s.reset();
-	
-	//BOOST_REQUIRE(s.search(1, 5) == true);
+
+	BOOST_REQUIRE(s.search(1, 5) == true);
 	s.reset();
 }
 
