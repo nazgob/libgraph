@@ -15,7 +15,39 @@
 #include "node.h"
 
 namespace libgraph 
-{	
+{
+	template<class T>
+		class queue_adapter // stack has top() method but queue has front()...
+		{
+			public:
+				queue_adapter()
+				{
+				}
+				
+				T& top() 
+				{
+					queue_with_top.front();
+				}
+
+				void pop()
+				{
+					queue_with_top.pop();
+				}
+
+				bool empty() const
+				{
+					return queue_with_top.empty();
+				}
+
+				void push(const T& e) 
+				{
+					queue_with_top.push(e);
+				}
+
+			private:
+				std::queue<T> queue_with_top;
+		};
+
 	template<typename T, typename search_memory_model, typename searchable_graph_memory_model>
 		class search_graph
 		{
@@ -85,6 +117,7 @@ namespace libgraph
 						}
 
 						size_t tmp_id = open.top();
+						//size_t tmp_id = open.front();
 						open.pop();
 
 						visitDFS(storage[tmp_id]);
@@ -108,7 +141,10 @@ namespace libgraph
 				bool search_status;
 				T goal;
 				std::set<T> closed;
-				std::stack<T> open; // stack or fifo, to be injected as type
+				//std::stack<T> open; // stack or fifo, to be injected as type
+				//std::queue<T> open; // stack or fifo, to be injected as type
+				//queue_adapter<T> open; // stack or fifo, to be injected as type
+				search_memory_model open;
 				std::vector<T> search_path;
 		};
 
