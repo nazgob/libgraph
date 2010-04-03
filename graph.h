@@ -34,25 +34,20 @@ namespace libgraph
 
 				boost::shared_ptr<node<T> > is_node(const T& value) const
 				{
-					//std::cout << "searching for value: " << value << std::endl;
 					for(typename std::vector<node_ptr>::const_iterator it = storage.begin(); it != storage.end(); ++it)
 					{
 						if((*it)->value == value)
 						{
-							//std::cout << "found it!" << std::endl;
 							return *it;
 						}
 					}
-					//std::cout << "can't find it!" << std::endl;
 					return node_ptr(new node<T>(NULL, true)); // NULL object idiom
 				}
 
 				void add(const T& begin_node, const T& end_node) // add arc
 				{
-					//std::cout << "add() = " << begin_node << " " << end_node << std::endl;
 					if(begin_node == end_node)
 					{
-						//std::cout << "same node! nothing added!" << std::endl;
 						return;
 					}
 
@@ -63,7 +58,6 @@ namespace libgraph
 					if(aTestResult.get()->is_null())
 					{
 						node_ptr pNode = node_ptr(new node<T>(begin_node));
-						//std::cout << "adding begin_node with id = " << pNode->id << std::endl;
 						aId = pNode->id;
 						pNode->null = false;
 						storage.push_back(pNode);
@@ -71,7 +65,6 @@ namespace libgraph
 					}
 					else
 					{
-						//std::cout << "begin_node exists, getting id" << std::endl;
 						aId = aTestResult->id;
 					}
 
@@ -79,7 +72,6 @@ namespace libgraph
 					if(bTestResult.get()->is_null())
 					{
 						node_ptr pNode = node_ptr(new node<T>(end_node));
-						//std::cout << "adding end_node with id = " << pNode->id << std::endl;
 						bId = pNode->id;
 						pNode->null = false;
 						storage.push_back(pNode);
@@ -87,7 +79,6 @@ namespace libgraph
 					}
 					else
 					{
-						//std::cout << "end_node exists, getting id" << std::endl;
 						bId = bTestResult->id;
 					}
 
