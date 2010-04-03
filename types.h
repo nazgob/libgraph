@@ -19,8 +19,8 @@ namespace libgraph
 
 	// boost::mpl::list-s are for BOOST_AUTO_TEST_CASE_TEMPLATE
 	typedef boost::mpl::list<int, double, size_t> nodes_types;
-	//typedef boost::mpl::list<matrix_graph, list_graph> graph_types;
-	typedef boost::mpl::list<list_graph> graph_types;
+	typedef boost::mpl::list<matrix_graph, list_graph> graph_types;
+	//typedef boost::mpl::list<list_graph> graph_types;
 	typedef boost::mpl::list<graph_memory_model<int, linked_list>, graph_memory_model<int, matrix> > memory_models; 
 
 } // namespace libgraph 

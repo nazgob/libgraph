@@ -119,11 +119,53 @@ namespace libgraph
 
 				void add(const T& begin_node, const T& end_node) // add arc
 				{
-					assert(false);
+					if(begin_node == end_node)
+					{
+						return;
+					}
+
+					size_t aId = 0;
+					size_t bId = 0;
+
+					node_ptr aTestResult = is_node(begin_node);
+					if(aTestResult.get()->is_null())
+					{
+						node_ptr pNode = node_ptr(new node<T>(begin_node));
+						aId = pNode->id;
+						pNode->null = false;
+						storage.push_back(pNode);
+						// put to matrix 
+					}
+					else
+					{
+						aId = aTestResult->id;
+					}
+
+					node_ptr bTestResult = is_node(end_node);
+					if(bTestResult.get()->is_null())
+					{
+						node_ptr pNode = node_ptr(new node<T>(end_node));
+						bId = pNode->id;
+						pNode->null = false;
+						storage.push_back(pNode);
+						// put to matrix 
+					}
+					else
+					{
+						bId = bTestResult->id;
+					}
+					//TODO: manage matrix here
 				}
 
 				boost::shared_ptr<node<T> > is_node(const T& value) const
 				{
+					for(typename std::vector<node_ptr>::const_iterator it = storage.begin(); it != storage.end(); ++it)
+					{
+						if((*it)->value == value)
+						{
+							return *it;
+						}
+					}
 					return node_ptr(new node<T>(NULL, true)); // NULL object idiom
 				}
 

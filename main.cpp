@@ -116,7 +116,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsNodeTest, T, graph_types)
 	BOOST_REQUIRE(g.is_node(6).get()->is_null() == true);
 	BOOST_REQUIRE(g.is_node(7).get()->is_null() == true);
 }
-
+/*
 BOOST_AUTO_TEST_CASE_TEMPLATE(DepthFirstSearchTest, T, graph_types)
 {
 	node<int>::reset();
@@ -209,5 +209,5 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(BreadFirstSearchTest, T, graph_types)
 
 	BOOST_REQUIRE(s.search(3, 5) == true);
 	s.reset();
-}
+}*/
 
