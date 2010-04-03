@@ -116,7 +116,44 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(IsNodeTest, T, graph_types)
 	BOOST_REQUIRE(g.is_node(6).get()->is_null() == true);
 	BOOST_REQUIRE(g.is_node(7).get()->is_null() == true);
 }
-/*
+
+BOOST_AUTO_TEST_CASE(LinkedListMemoryModelTest)
+{
+	node<int>::reset();
+
+	graph_memory_model<int, linked_list> m;
+	BOOST_REQUIRE_EQUAL(m.size(), 0);
+	
+	m.add(1, 2);
+	BOOST_REQUIRE_EQUAL(m.size(), 2);
+	BOOST_REQUIRE_EQUAL(m.adjectedListsVec.size(), 2);
+	BOOST_REQUIRE_EQUAL(m.adjectedListsVec[0]->size(), 1);
+	BOOST_REQUIRE_EQUAL(m.adjectedListsVec[1]->size(), 1);
+
+
+	m.add(2, 3);
+	BOOST_REQUIRE_EQUAL(m.size(), 3);
+	BOOST_REQUIRE_EQUAL(m.adjectedListsVec.size(), 3);
+	BOOST_REQUIRE_EQUAL(m.adjectedListsVec[0]->size(), 1);
+	BOOST_REQUIRE_EQUAL(m.adjectedListsVec[1]->size(), 2);
+	BOOST_REQUIRE_EQUAL(m.adjectedListsVec[2]->size(), 1);
+}
+
+BOOST_AUTO_TEST_CASE(MatrixMemoryModelTest)
+{
+	node<int>::reset();
+
+	graph_memory_model<int, matrix> m;
+	BOOST_REQUIRE_EQUAL(m.size(), 0);
+	
+	m.add(1, 2);
+	BOOST_REQUIRE_EQUAL(m.size(), 2);
+
+
+	m.add(2, 3);
+	BOOST_REQUIRE_EQUAL(m.size(), 3);
+}
+
 BOOST_AUTO_TEST_CASE_TEMPLATE(DepthFirstSearchTest, T, graph_types)
 {
 	node<int>::reset();
@@ -209,5 +246,5 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(BreadFirstSearchTest, T, graph_types)
 
 	BOOST_REQUIRE(s.search(3, 5) == true);
 	s.reset();
-}*/
+}
 
