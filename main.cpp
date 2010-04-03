@@ -132,20 +132,20 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(DepthFirstSearchTest, T, graph_types)
 	g.add(5, 1);
 	BOOST_REQUIRE_EQUAL(g.size(), 5);
 
-	search_graph<int, std::stack<int>, list_graph_memory_model > s(g);
+	search_graph<int, std::stack<int>, list_graph_memory_model > s(g); // TODO: get back to template test
 	BOOST_REQUIRE(s.search(1, 10) == false);
 	s.reset();
 
-	BOOST_REQUIRE(s.search(1, 7) == false);
+	BOOST_REQUIRE(s.search(3, 7) == false);
 	s.reset();
 
 	BOOST_REQUIRE(s.search(1, -5) == false);
 	s.reset();
 
-	BOOST_REQUIRE(s.search(1, -10) == false);
+	BOOST_REQUIRE(s.search(0, -10) == false);
 	s.reset();
 
-	BOOST_REQUIRE(s.search(1, 100) == false);
+	BOOST_REQUIRE(s.search(10, 100) == false);
 	s.reset();
 
 	BOOST_REQUIRE(s.search(1, 1) == true);
@@ -154,13 +154,13 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(DepthFirstSearchTest, T, graph_types)
 	BOOST_REQUIRE(s.search(1, 2) == true);
 	s.reset();
 
-	BOOST_REQUIRE(s.search(1, 3) == true);
+	BOOST_REQUIRE(s.search(5, 3) == true);
 	s.reset();
 
-	BOOST_REQUIRE(s.search(1, 4) == true);
+	BOOST_REQUIRE(s.search(2, 4) == true);
 	s.reset();
 
-	BOOST_REQUIRE(s.search(1, 5) == true);
+	BOOST_REQUIRE(s.search(3, 5) == true);
 	s.reset();
 }
 
@@ -179,20 +179,20 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(BreadFirstSearchTest, T, graph_types)
 	g.add(5, 1);
 	BOOST_REQUIRE_EQUAL(g.size(), 5);
 	
-	search_graph<int, queue_adapter<int>, list_graph_memory_model > s(g);
-	BOOST_REQUIRE(s.search(1, 10) == false);
+	search_graph<int, queue_adapter<int>, list_graph_memory_model > s(g); // TODO: get back to template test
+	BOOST_REQUIRE(s.search(2, 10) == false);
 	s.reset();
 
-	BOOST_REQUIRE(s.search(1, 7) == false);
+	BOOST_REQUIRE(s.search(3, 7) == false);
 	s.reset();
 
-	BOOST_REQUIRE(s.search(1, -5) == false);
+	BOOST_REQUIRE(s.search(3, -5) == false);
 	s.reset();
 
-	BOOST_REQUIRE(s.search(1, -10) == false);
+	BOOST_REQUIRE(s.search(7, -10) == false);
 	s.reset();
 
-	BOOST_REQUIRE(s.search(1, 100) == false);
+	BOOST_REQUIRE(s.search(50, 100) == false);
 	s.reset();
 
 	BOOST_REQUIRE(s.search(1, 1) == true);
@@ -201,14 +201,13 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(BreadFirstSearchTest, T, graph_types)
 	BOOST_REQUIRE(s.search(1, 2) == true);
 	s.reset();
 
-	BOOST_REQUIRE(s.search(1, 3) == true);
+	BOOST_REQUIRE(s.search(5, 3) == true);
 	s.reset();
 
-	BOOST_REQUIRE(s.search(1, 4) == true);
+	BOOST_REQUIRE(s.search(2, 4) == true);
 	s.reset();
 
-	BOOST_REQUIRE(s.search(1, 5) == true);
+	BOOST_REQUIRE(s.search(3, 5) == true);
 	s.reset();
 }
-
 

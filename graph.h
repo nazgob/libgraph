@@ -148,7 +148,9 @@ namespace libgraph
 				}
 
 			protected:
-				std::vector<node<T> > storage;
+				typedef boost::shared_ptr<node<T> > node_ptr;
+				std::vector<node_ptr> storage;
+				
 				std::vector<std::vector<int> > matrix2D;
 		};
 

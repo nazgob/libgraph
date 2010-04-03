@@ -58,14 +58,22 @@ namespace libgraph
 					adjectedListsVec = g.get_memory().adjectedListsVec;
 				}
 
-				bool search(T start_node_value, T seeked_value)
+				bool search(T root_node_value, T seeked_value_node)
 				{
-					goal = seeked_value;
+					goal = seeked_value_node;
 					for(typename std::vector<node_ptr>::const_iterator it = storage.begin(); it != storage.end(); ++it)
 					{
-						if(visitDFS(*it) == true)
+						if((*it)->value == seeked_value_node)
 						{
-							return true;
+							return true;	
+						}
+
+						if((*it)->value == root_node_value)
+						{
+							if(visitDFS(*it) == true)
+							{
+								return true;
+							}
 						}
 					}
 					reset();
@@ -98,37 +106,34 @@ namespace libgraph
 					search_status = false;
 					if(closed.find(node->id) == closed.end())
 					{
-						//std::cout << "node->id not in closed list = " << node->id << std::endl;
-						closed.insert(node->id);
+						open.push(node->id);
+					}
+					while(!open.empty())
+					{
 						search_path.push_back(node->id);
-
+						closed.insert(node->id);
 						if(node->value == goal)
 						{
-							//std::cout << "found goal! node-> value == " <<  node->value << std::endl;
 							search_status = true;
 							return true;
 						}
-
 						std::list<T> tmp_list = *(adjectedListsVec[node->id].get());
 						for(typename std::list<T>::const_iterator it = tmp_list.begin(); it != tmp_list.end(); ++it)
 						{
-							//std::cout << "inserting adj_list ids to stack!" << std::endl;
-							open.push(*it);
+							if(closed.find(*it) == closed.end())
+							{
+								open.push(*it);
+							}
 						}
-
 						size_t tmp_id = open.top();
-						//size_t tmp_id = open.front();
 						open.pop();
+
+						if(search_status == true) return true;
 
 						visitDFS(storage[tmp_id]);
 					}
-					if(search_status == true)
-					{
-						//std::cout << "search_status == true, return!"<< std::endl;
-						return true;
-					}
-					//std::cout << "node->id is on closed list = " << node->id << std::endl;
-					return false;
+
+					if(search_status == true) return true;
 				}
 
 			private:
@@ -141,9 +146,6 @@ namespace libgraph
 				bool search_status;
 				T goal;
 				std::set<T> closed;
-				//std::stack<T> open; // stack or fifo, to be injected as type
-				//std::queue<T> open; // stack or fifo, to be injected as type
-				//queue_adapter<T> open; // stack or fifo, to be injected as type
 				search_memory_model open;
 				std::vector<T> search_path;
 		};
