@@ -48,11 +48,18 @@ namespace libgraph
 				std::queue<T> queue_with_top;
 		};
 
-	template<typename T, typename search_memory_model, typename searchable_graph_memory_model>
+	enum graph_memory_structure {list_graph_internal_model, matrix_graph_internal_model};
+
+	template<typename T, typename search_memory_model, graph_memory_structure>
 		class search_graph
 		{
+		};
+
+	template<typename T, typename search_memory_model>
+		class search_graph<T, search_memory_model, list_graph_internal_model>
+		{
 			public:
-				search_graph(const list_graph& g)
+				search_graph<T, search_memory_model, list_graph_internal_model>(const list_graph& g)
 				{
 					storage = g.get_memory().storage;
 					adjectedListsVec = g.get_memory().adjectedListsVec;

@@ -127,38 +127,69 @@ BOOST_AUTO_TEST_CASE(LinkedListMemoryModelTest)
 	m.add(1, 2);
 	BOOST_REQUIRE_EQUAL(m.size(), 2);
 	BOOST_REQUIRE_EQUAL(m.adjectedListsVec.size(), 2);
-	BOOST_REQUIRE_EQUAL(m.adjectedListsVec[0]->size(), 1);
-	BOOST_REQUIRE_EQUAL(m.adjectedListsVec[1]->size(), 1);
+	BOOST_REQUIRE_EQUAL(m.adjectedListsVec.at(0)->size(), 1);
+	BOOST_REQUIRE_EQUAL(m.adjectedListsVec.at(1)->size(), 1);
 
 
 	m.add(2, 3);
 	BOOST_REQUIRE_EQUAL(m.size(), 3);
 	BOOST_REQUIRE_EQUAL(m.adjectedListsVec.size(), 3);
-	BOOST_REQUIRE_EQUAL(m.adjectedListsVec[0]->size(), 1);
-	BOOST_REQUIRE_EQUAL(m.adjectedListsVec[1]->size(), 2);
-	BOOST_REQUIRE_EQUAL(m.adjectedListsVec[2]->size(), 1);
+	BOOST_REQUIRE_EQUAL(m.adjectedListsVec.at(0)->size(), 1);
+	BOOST_REQUIRE_EQUAL(m.adjectedListsVec.at(1)->size(), 2);
+	BOOST_REQUIRE_EQUAL(m.adjectedListsVec.at(2)->size(), 1);
 }
 
 BOOST_AUTO_TEST_CASE(MatrixMemoryModelTest)
 {
 	node<int>::reset();
 
-	graph_memory_model<int, matrix> m;
+	const size_t fixed_matix_size = 3;
+	graph_memory_model<int, matrix> m(fixed_matix_size);
 	BOOST_REQUIRE_EQUAL(m.size(), 0);
-	
+	BOOST_REQUIRE_EQUAL(m.matrix2D.size(), fixed_matix_size);
+
 	m.add(1, 2);
 	BOOST_REQUIRE_EQUAL(m.size(), 2);
+	BOOST_REQUIRE_EQUAL(m.matrix2D.size(), fixed_matix_size);
+	BOOST_REQUIRE_EQUAL(m.matrix2D.at(0).size(), fixed_matix_size);
+	BOOST_REQUIRE_EQUAL(m.matrix2D.at(1).size(), fixed_matix_size);
+	BOOST_REQUIRE_EQUAL(m.matrix2D.at(2).size(), fixed_matix_size);
 
-
+	BOOST_REQUIRE_EQUAL(m.matrix2D.at(0).at(0), 0); // 1
+	BOOST_REQUIRE_EQUAL(m.matrix2D.at(1).at(0), 1); // 2
+	BOOST_REQUIRE_EQUAL(m.matrix2D.at(2).at(0), 0); // 3
+	BOOST_REQUIRE_EQUAL(m.matrix2D.at(0).at(1), 1); // 4
+	BOOST_REQUIRE_EQUAL(m.matrix2D.at(1).at(1), 0); // 5
+	BOOST_REQUIRE_EQUAL(m.matrix2D.at(2).at(1), 0); // 6
+	BOOST_REQUIRE_EQUAL(m.matrix2D.at(0).at(2), 0); // 7
+	BOOST_REQUIRE_EQUAL(m.matrix2D.at(1).at(2), 0); // 8
+	BOOST_REQUIRE_EQUAL(m.matrix2D.at(2).at(2), 0); // 9
+	
 	m.add(2, 3);
 	BOOST_REQUIRE_EQUAL(m.size(), 3);
+	BOOST_REQUIRE_EQUAL(m.matrix2D.size(), fixed_matix_size);
+	BOOST_REQUIRE_EQUAL(m.matrix2D.at(0).size(), fixed_matix_size);
+	BOOST_REQUIRE_EQUAL(m.matrix2D.at(1).size(), fixed_matix_size);
+	BOOST_REQUIRE_EQUAL(m.matrix2D.at(2).size(), fixed_matix_size);
+
+	BOOST_REQUIRE_EQUAL(m.matrix2D.at(0).at(0), 0); // 1
+	BOOST_REQUIRE_EQUAL(m.matrix2D.at(1).at(0), 1); // 2
+	BOOST_REQUIRE_EQUAL(m.matrix2D.at(2).at(0), 0); // 3
+	BOOST_REQUIRE_EQUAL(m.matrix2D.at(0).at(1), 1); // 4
+	BOOST_REQUIRE_EQUAL(m.matrix2D.at(1).at(1), 0); // 5
+	BOOST_REQUIRE_EQUAL(m.matrix2D.at(2).at(1), 1); // 6
+	BOOST_REQUIRE_EQUAL(m.matrix2D.at(0).at(2), 0); // 7
+	BOOST_REQUIRE_EQUAL(m.matrix2D.at(1).at(2), 1); // 8
+	BOOST_REQUIRE_EQUAL(m.matrix2D.at(2).at(2), 0); // 9
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(DepthFirstSearchTest, T, graph_types)
 {
 	node<int>::reset();
 
-	T g;
+	//T g; TODO: reenable that
+	list_graph g;
+
 	BOOST_REQUIRE_EQUAL(g.size(), 0);
 
 	// circle graph
@@ -169,7 +200,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(DepthFirstSearchTest, T, graph_types)
 	g.add(5, 1);
 	BOOST_REQUIRE_EQUAL(g.size(), 5);
 
-	search_graph<int, std::stack<int>, list_graph_memory_model > s(g); // TODO: get back to template test
+	search_graph<int, std::stack<int>, list_graph_internal_model> s(g); // TODO: get back to template test
 	BOOST_REQUIRE(s.search(1, 10) == false);
 	s.reset();
 
@@ -205,7 +236,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(BreadFirstSearchTest, T, graph_types)
 {
 	node<int>::reset();
 
-	T g;
+	//T g; // TODO: reenable that
+	list_graph g;
 	BOOST_REQUIRE_EQUAL(g.size(), 0);
 
 	// circle graph
@@ -216,7 +248,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(BreadFirstSearchTest, T, graph_types)
 	g.add(5, 1);
 	BOOST_REQUIRE_EQUAL(g.size(), 5);
 	
-	search_graph<int, queue_adapter<int>, list_graph_memory_model > s(g); // TODO: get back to template test
+	search_graph<int, queue_adapter<int>, list_graph_internal_model > s(g); // TODO: get back to template test
 	BOOST_REQUIRE(s.search(2, 10) == false);
 	s.reset();
 
@@ -246,5 +278,13 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(BreadFirstSearchTest, T, graph_types)
 
 	BOOST_REQUIRE(s.search(3, 5) == true);
 	s.reset();
+}
+
+BOOST_AUTO_TEST_CASE(work_in_progress)
+{
+	node<int>::reset();
+	list_graph g;
+
+	search_graph<int, std::stack<int>, list_graph_internal_model> s(g); // TODO: get back to template test
 }
 
