@@ -206,8 +206,8 @@ namespace libgraph
 				std::vector<node_ptr> storage;
 				
 				std::vector<std::vector<int> > matrix2D;
-			protected:
 				const size_t matrix_size;
+			protected:
 
 				void initialize_matrix()
 				{
@@ -225,6 +225,10 @@ namespace libgraph
 		{
 			public:
 				graph()
+				{
+				}
+
+				graph(size_t size) : fixed_size(size), container(fixed_size)
 				{
 				}
 
@@ -254,6 +258,7 @@ namespace libgraph
 				}
 
 			protected:
+				size_t fixed_size;
 				Memory container;
 		};
 } // namespace libgraph

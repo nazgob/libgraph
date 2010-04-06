@@ -183,11 +183,10 @@ BOOST_AUTO_TEST_CASE(MatrixMemoryModelTest)
 	BOOST_REQUIRE_EQUAL(m.matrix2D.at(2).at(2), 0); // 9
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(DepthFirstSearchTest, T, graph_types)
+BOOST_AUTO_TEST_CASE(DepthFirstSearchTest_List)
 {
 	node<int>::reset();
 
-	//T g; TODO: reenable that
 	list_graph g;
 
 	BOOST_REQUIRE_EQUAL(g.size(), 0);
@@ -200,7 +199,8 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(DepthFirstSearchTest, T, graph_types)
 	g.add(5, 1);
 	BOOST_REQUIRE_EQUAL(g.size(), 5);
 
-	search_graph<int, std::stack<int>, list_graph_internal_model> s(g); // TODO: get back to template test
+	search_graph<int, std::stack<int>, list_graph_internal_model> s(g);
+
 	BOOST_REQUIRE(s.search(1, 10) == false);
 	s.reset();
 
@@ -232,11 +232,58 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(DepthFirstSearchTest, T, graph_types)
 	s.reset();
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(BreadFirstSearchTest, T, graph_types)
+BOOST_AUTO_TEST_CASE(DepthFirstSearchTest_Matrix)
 {
 	node<int>::reset();
 
-	//T g; // TODO: reenable that
+	matrix_graph g(5);
+	BOOST_REQUIRE_EQUAL(g.size(), 0);
+
+	// circle graph
+	g.add(1, 2);
+	g.add(2, 3);
+	g.add(3, 4);
+	g.add(4, 5);
+	g.add(5, 1);
+	BOOST_REQUIRE_EQUAL(g.size(), 5);
+
+	search_graph<int, std::stack<int>, matrix_graph_internal_model> s(g);
+
+	BOOST_REQUIRE(s.search(1, 10) == false);
+	s.reset();
+
+	BOOST_REQUIRE(s.search(3, 7) == false);
+	s.reset();
+
+	BOOST_REQUIRE(s.search(1, -5) == false);
+	s.reset();
+
+	BOOST_REQUIRE(s.search(0, -10) == false);
+	s.reset();
+
+	BOOST_REQUIRE(s.search(10, 100) == false);
+	s.reset();
+
+	BOOST_REQUIRE(s.search(1, 1) == true);
+	s.reset();
+
+	BOOST_REQUIRE(s.search(1, 2) == true);
+	s.reset();
+
+	BOOST_REQUIRE(s.search(5, 3) == true);
+	s.reset();
+
+	BOOST_REQUIRE(s.search(2, 4) == true);
+	s.reset();
+
+	BOOST_REQUIRE(s.search(3, 5) == true);
+	s.reset();
+}
+
+BOOST_AUTO_TEST_CASE(BreadFirstSearchTest_List)
+{
+	node<int>::reset();
+
 	list_graph g;
 	BOOST_REQUIRE_EQUAL(g.size(), 0);
 
@@ -248,7 +295,54 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(BreadFirstSearchTest, T, graph_types)
 	g.add(5, 1);
 	BOOST_REQUIRE_EQUAL(g.size(), 5);
 	
-	search_graph<int, queue_adapter<int>, list_graph_internal_model > s(g); // TODO: get back to template test
+	search_graph<int, queue_adapter<int>, list_graph_internal_model > s(g);
+	BOOST_REQUIRE(s.search(2, 10) == false);
+	s.reset();
+
+	BOOST_REQUIRE(s.search(3, 7) == false);
+	s.reset();
+
+	BOOST_REQUIRE(s.search(3, -5) == false);
+	s.reset();
+
+	BOOST_REQUIRE(s.search(7, -10) == false);
+	s.reset();
+
+	BOOST_REQUIRE(s.search(50, 100) == false);
+	s.reset();
+
+	BOOST_REQUIRE(s.search(1, 1) == true);
+	s.reset();
+
+	BOOST_REQUIRE(s.search(1, 2) == true);
+	s.reset();
+
+	BOOST_REQUIRE(s.search(5, 3) == true);
+	s.reset();
+
+	BOOST_REQUIRE(s.search(2, 4) == true);
+	s.reset();
+
+	BOOST_REQUIRE(s.search(3, 5) == true);
+	s.reset();
+}
+
+BOOST_AUTO_TEST_CASE(BreadFirstSearchTest_Matrix)
+{
+	node<int>::reset();
+
+	matrix_graph g(5);
+	BOOST_REQUIRE_EQUAL(g.size(), 0);
+
+	// circle graph
+	g.add(1, 2);
+	g.add(2, 3);
+	g.add(3, 4);
+	g.add(4, 5);
+	g.add(5, 1);
+	BOOST_REQUIRE_EQUAL(g.size(), 5);
+	
+	search_graph<int, queue_adapter<int>, matrix_graph_internal_model > s(g);
 	BOOST_REQUIRE(s.search(2, 10) == false);
 	s.reset();
 
@@ -283,8 +377,10 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(BreadFirstSearchTest, T, graph_types)
 BOOST_AUTO_TEST_CASE(work_in_progress)
 {
 	node<int>::reset();
-	list_graph g;
+	list_graph lg;
+	matrix_graph mg;
 
-	search_graph<int, std::stack<int>, list_graph_internal_model> s(g); // TODO: get back to template test
+	search_graph<int, std::stack<int>, list_graph_internal_model> l(lg);
+	search_graph<int, std::stack<int>, matrix_graph_internal_model> m(mg);
 }
 
