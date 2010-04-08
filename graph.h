@@ -79,7 +79,7 @@ namespace libgraph
 						node_ptr pNode = node_ptr(new node<T>(begin_node));
 						aId = pNode->id;
 						pNode->null = false;
-						graph_memory_model::storage.push_back(pNode);
+						this->storage.push_back(pNode);
 						adjectedListsVec.push_back(list_ptr(new std::list<T>));
 					}
 					else
@@ -93,7 +93,7 @@ namespace libgraph
 						node_ptr pNode = node_ptr(new node<T>(end_node));
 						bId = pNode->id;
 						pNode->null = false;
-						graph_memory_model::storage.push_back(pNode);
+						this->storage.push_back(pNode);
 						adjectedListsVec.push_back(list_ptr(new std::list<T>));
 					}
 					else
@@ -107,7 +107,7 @@ namespace libgraph
 					adjectedListsVec[bId]->push_back(aId);
 					adjectedListsVec[bId]->unique();
 
-					assert(graph_memory_model::storage.size() == adjectedListsVec.size());
+					assert(this->storage.size() == adjectedListsVec.size());
 				}	
 
 				typedef boost::shared_ptr<node<T> > node_ptr;
@@ -156,7 +156,7 @@ namespace libgraph
 							msg << "node id " << pNode->id << " is greater than maximum matrix size " << matrix_size << "!";
 							throw std::invalid_argument(msg.str()); // TODO: add test for that
 						}
-						graph_memory_model::storage.push_back(pNode);
+						this->storage.push_back(pNode);
 					}
 					else
 					{
@@ -175,7 +175,7 @@ namespace libgraph
 							msg << "node id " << pNode->id << " is greater than maximum matrix size " << matrix_size << "!";
 							throw std::invalid_argument(msg.str()); // TODO: add test for that
 						}
-						graph_memory_model::storage.push_back(pNode);
+						this->storage.push_back(pNode);
 					}
 					else
 					{
