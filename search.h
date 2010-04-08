@@ -25,7 +25,7 @@ namespace libgraph
 
 				T& top() 
 				{
-					queue_with_top.front();
+					return queue_with_top.front();
 				}
 
 				void pop()
@@ -152,6 +152,8 @@ namespace libgraph
 					}
 
 					if(search_status == true) return true;
+
+					return false;
 				}
 
 			private:
@@ -246,6 +248,8 @@ namespace libgraph
 					}
 
 					if(search_status == true) return true;
+
+					return false;
 				}
 
 			private:

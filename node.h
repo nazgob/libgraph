@@ -7,12 +7,11 @@ namespace libgraph
 		class node 
 		{
 			public:
-				node(const T& input, bool nullity = false) : value(input)
+				node(const T& input, bool nullity = false) : value(input), id(0), null(false)
 			{
 				if(false == nullity)
 				{
 					id = counter++; // counting from 0 is handy in C++
-					//std::cout << "creating node with id = " << id << std::endl;
 				}
 				else
 				{

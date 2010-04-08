@@ -2,12 +2,12 @@ OBJS = main.o
 
 CC = g++
 EXEC = graph
-W_FLAGS = -g -Wall -Wextra -pedantic
+W_FLAGS = -Wall -Wextra -pedantic
 
 FLAGS = -I . $(W_FLAGS)
 
-%.o : %.c
-	$(CC) $(FLAGS) -g -c $<
+%.o : %.cpp
+	$(CC) $(FLAGS) -c $<
 
 main: $(OBJS)
 	@echo "Building $(EXEC)"
@@ -18,5 +18,5 @@ tags:
 		
 clean:
 	@echo "Cleaning all!"
-	\rm -rf *.o *.out *.txt *.~ $(EXEC)
+	\rm -rf *.o *.out *.~ $(EXEC)
 
