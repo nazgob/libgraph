@@ -18,37 +18,37 @@
 namespace libgraph
 {
 	const size_t default_matrix_size = 10;
-	
+
 	enum memory {list, matrix};
 
 	template<typename T, memory>
-	class abstract_memory_model
-	{
-		public:
-			boost::shared_ptr<node<T> > is_node(const T& value) const
-			{
-				for(typename std::vector<node_ptr>::const_iterator it = storage.begin(); it != storage.end(); ++it)
+		class abstract_memory_model
+		{
+			public:
+				boost::shared_ptr<node<T> > is_node(const T& value) const
 				{
-					if((*it)->value == value)
+					for(typename std::vector<node_ptr>::const_iterator it = storage.begin(); it != storage.end(); ++it)
 					{
-						return *it;
+						if((*it)->value == value)
+						{
+							return *it;
+						}
 					}
+					return node_ptr(new node<T>(NULL, true)); // NULL object idiom
 				}
-				return node_ptr(new node<T>(NULL, true)); // NULL object idiom
-			}
 
-			size_t size() const
-			{
-				return storage.size();
-			}
+				size_t size() const
+				{
+					return storage.size();
+				}
 
-			void reserve(size_t size)
-			{
-				storage.reserve(size);
-			}
-			typedef boost::shared_ptr<node<T> > node_ptr;
-			std::vector<node_ptr> storage;
-	};
+				void reserve(size_t size)
+				{
+					storage.reserve(size);
+				}
+				typedef boost::shared_ptr<node<T> > node_ptr;
+				std::vector<node_ptr> storage;
+		};
 
 	template<typename T, memory>
 		class graph_memory_model
@@ -121,19 +121,19 @@ namespace libgraph
 			public:
 
 				graph_memory_model<T, matrix>() : matrix_size(default_matrix_size)
-				{
-					initialize_matrix();
-				}
+			{
+				initialize_matrix();
+			}
 
 				graph_memory_model<T, matrix>(size_t fixed_matrix_size) : matrix_size(fixed_matrix_size)
+			{
+				if(fixed_matrix_size < 2) // minimum to get one arc into graph
 				{
-					if(fixed_matrix_size < 2) // minimum to get one arc into graph
-					{
-						throw std::invalid_argument("matrix must be minimum 2 rows / cols strong!");
-					}
-					initialize_matrix();
+					throw std::invalid_argument("matrix must be minimum 2 rows / cols strong!");
 				}
-				
+				initialize_matrix();
+			}
+
 				void add(const T& begin_node, const T& end_node) // add arc
 				{
 					if(begin_node == end_node)
@@ -210,8 +210,8 @@ namespace libgraph
 				}
 
 				graph(size_t size) : fixed_size(size), container(fixed_size)
-				{
-				}
+			{
+			}
 
 				void add(const T& begin_node, const T& end_node) // add arc
 				{

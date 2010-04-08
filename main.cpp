@@ -33,7 +33,7 @@ BOOST_AUTO_TEST_CASE(QueueAdapterTest)
 	q.push(3);
 	BOOST_REQUIRE(q.empty() == false);
 	BOOST_REQUIRE_EQUAL(q.top(), 1);
-	
+
 	q.pop();
 	BOOST_REQUIRE_EQUAL(q.top(), 2);
 
@@ -123,7 +123,7 @@ BOOST_AUTO_TEST_CASE(LinkedListMemoryModelTest)
 
 	graph_memory_model<int, list> m;
 	BOOST_REQUIRE_EQUAL(m.size(), 0);
-	
+
 	m.add(1, 2);
 	BOOST_REQUIRE_EQUAL(m.size(), 2);
 	BOOST_REQUIRE_EQUAL(m.adjectedListsVec.size(), 2);
@@ -164,7 +164,7 @@ BOOST_AUTO_TEST_CASE(MatrixMemoryModelTest)
 	BOOST_REQUIRE_EQUAL(m.matrix2D.at(0).at(2), 0); // 7
 	BOOST_REQUIRE_EQUAL(m.matrix2D.at(1).at(2), 0); // 8
 	BOOST_REQUIRE_EQUAL(m.matrix2D.at(2).at(2), 0); // 9
-	
+
 	m.add(2, 3);
 	BOOST_REQUIRE_EQUAL(m.size(), 3);
 	BOOST_REQUIRE_EQUAL(m.matrix2D.size(), fixed_matix_size);
@@ -294,7 +294,7 @@ BOOST_AUTO_TEST_CASE(BreadFirstSearchTest_List)
 	g.add(4, 5);
 	g.add(5, 1);
 	BOOST_REQUIRE_EQUAL(g.size(), 5);
-	
+
 	search_graph<int, queue_adapter<int>, list_graph_internal_model > s(g);
 	BOOST_REQUIRE(s.search(2, 10) == false);
 	s.reset();
@@ -341,7 +341,7 @@ BOOST_AUTO_TEST_CASE(BreadFirstSearchTest_Matrix)
 	g.add(4, 5);
 	g.add(5, 1);
 	BOOST_REQUIRE_EQUAL(g.size(), 5);
-	
+
 	search_graph<int, queue_adapter<int>, matrix_graph_internal_model > s(g);
 	BOOST_REQUIRE(s.search(2, 10) == false);
 	s.reset();

@@ -8,7 +8,6 @@
 #include <algorithm>
 
 #include <boost/shared_ptr.hpp>
-//#include <boost/lambda/lambda.hpp>
 
 #include "types.h"
 #include "graph.h"
@@ -23,7 +22,7 @@ namespace libgraph
 				queue_adapter()
 				{
 				}
-				
+
 				T& top() 
 				{
 					queue_with_top.front();
@@ -255,7 +254,7 @@ namespace libgraph
 				typedef boost::shared_ptr<std::list<T> > list_ptr;
 				std::vector<std::vector<int> > matrix2D;
 				size_t matrix_size;
-				
+
 				bool search_status;
 				T goal;
 		};
