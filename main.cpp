@@ -16,7 +16,7 @@ using namespace libgraph;
 BOOST_AUTO_TEST_CASE(InstantiateDifferentGraphs)
 {
 	graph<long> g;
-	graph<int, graph_memory_model<int, linked_list> > l;
+	graph<int, graph_memory_model<int, list> > l;
 	graph<double, graph_memory_model<double, matrix> > m;
 
 	BOOST_REQUIRE_EQUAL(g.size(), 0);
@@ -121,7 +121,7 @@ BOOST_AUTO_TEST_CASE(LinkedListMemoryModelTest)
 {
 	node<int>::reset();
 
-	graph_memory_model<int, linked_list> m;
+	graph_memory_model<int, list> m;
 	BOOST_REQUIRE_EQUAL(m.size(), 0);
 	
 	m.add(1, 2);

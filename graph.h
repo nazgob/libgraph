@@ -17,7 +17,7 @@
 
 namespace libgraph
 {
-	enum memory {linked_list, matrix}; // TODO: rename linked_list to list
+	enum memory {list, matrix};
 
 	const size_t default_matrix_size = 10;
 
@@ -27,10 +27,10 @@ namespace libgraph
 		};
 
 	template<typename T>
-		class graph_memory_model<T, linked_list>
+		class graph_memory_model<T, list>
 		{
 			public:
-				graph_memory_model<T, linked_list>()
+				graph_memory_model<T, list>()
 				{
 				}
 
@@ -128,6 +128,18 @@ namespace libgraph
 					}
 					initialize_matrix();
 				}
+				
+				boost::shared_ptr<node<T> > is_node(const T& value) const
+				{
+					for(typename std::vector<node_ptr>::const_iterator it = storage.begin(); it != storage.end(); ++it)
+					{
+						if((*it)->value == value)
+						{
+							return *it;
+						}
+					}
+					return node_ptr(new node<T>(NULL, true)); // NULL object idiom
+				}
 
 				void add(const T& begin_node, const T& end_node) // add arc
 				{
@@ -178,18 +190,6 @@ namespace libgraph
 					}
 					matrix2D.at(aId).at(bId) = 1;
 					matrix2D.at(bId).at(aId) = 1;
-				}
-
-				boost::shared_ptr<node<T> > is_node(const T& value) const
-				{
-					for(typename std::vector<node_ptr>::const_iterator it = storage.begin(); it != storage.end(); ++it)
-					{
-						if((*it)->value == value)
-						{
-							return *it;
-						}
-					}
-					return node_ptr(new node<T>(NULL, true)); // NULL object idiom
 				}
 
 				size_t size() const
