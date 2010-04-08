@@ -17,9 +17,9 @@
 
 namespace libgraph
 {
-	enum memory {list, matrix};
-
 	const size_t default_matrix_size = 10;
+	
+	enum memory {list, matrix};
 
 	template<typename T, memory>
 	class abstract_memory_model
@@ -110,8 +110,7 @@ namespace libgraph
 					assert(graph_memory_model::storage.size() == adjectedListsVec.size());
 				}	
 
-				typedef boost::shared_ptr<node<T> > node_ptr; // we can ged rid of it but it's more pragmatic to leave it here
-
+				typedef boost::shared_ptr<node<T> > node_ptr;
 				typedef boost::shared_ptr<std::list<T> > list_ptr;
 				std::vector<list_ptr> adjectedListsVec;
 		};

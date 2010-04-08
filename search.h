@@ -51,42 +51,9 @@ namespace libgraph
 	enum graph_memory_structure {list_graph_internal_model, matrix_graph_internal_model};
 
 	template<typename T, typename search_memory_model, graph_memory_structure>
-		class search_graph
-		{
-		};
-
-	template<typename T, typename search_memory_model>
-		class search_graph<T, search_memory_model, list_graph_internal_model>
+		class abstract_search_graph
 		{
 			public:
-				search_graph<T, search_memory_model, list_graph_internal_model>(const list_graph& g)
-				{
-					storage = g.get_memory().storage;
-					adjectedListsVec = g.get_memory().adjectedListsVec;
-				}
-
-				bool search(T root_node_value, T seeked_value_node)
-				{
-					goal = seeked_value_node;
-					for(typename std::vector<node_ptr>::const_iterator it = storage.begin(); it != storage.end(); ++it)
-					{
-						if((*it)->value == seeked_value_node)
-						{
-							return true;	
-						}
-
-						if((*it)->value == root_node_value)
-						{
-							if(visitDFS(*it) == true)
-							{
-								return true;
-							}
-						}
-					}
-					reset();
-					return false;
-				}
-
 				void display_search_path() const
 				{
 					std::copy(search_path.begin(), search_path.end(), std::ostream_iterator<T>(std::cout, " -> "));
@@ -105,20 +72,65 @@ namespace libgraph
 
 					search_path.clear();
 				}
+			protected:
+				typedef boost::shared_ptr<node<T> > node_ptr;
+				std::vector<node_ptr> storage;
+
+				std::set<T> closed;
+				search_memory_model open;
+				std::vector<T> search_path;
+		};
+
+	template<typename T, typename search_memory_model, graph_memory_structure>
+		class search_graph
+		{
+		};
+
+	template<typename T, typename search_memory_model>
+		class search_graph<T, search_memory_model, list_graph_internal_model> : public abstract_search_graph<T, search_memory_model, list_graph_internal_model>
+		{
+			public:
+				search_graph<T, search_memory_model, list_graph_internal_model>(const list_graph& g)
+				{
+					this->storage = g.get_memory().storage;
+					adjectedListsVec = g.get_memory().adjectedListsVec;
+				}
+
+				bool search(T root_node_value, T seeked_value_node)
+				{
+					goal = seeked_value_node;
+					for(typename std::vector<node_ptr>::const_iterator it = this->storage.begin(); it != this->storage.end(); ++it)
+					{
+						if((*it)->value == seeked_value_node)
+						{
+							return true;	
+						}
+
+						if((*it)->value == root_node_value)
+						{
+							if(visitDFS(*it) == true)
+							{
+								return true;
+							}
+						}
+					}
+					this->reset();
+					return false;
+				}
 
 			protected:
 
 				bool visitDFS(boost::shared_ptr<node<T> > node) 
 				{
 					search_status = false;
-					if(closed.find(node->id) == closed.end())
+					if(this->closed.find(node->id) == this->closed.end())
 					{
-						open.push(node->id);
+						this->open.push(node->id);
 					}
-					while(!open.empty())
+					while(!this->open.empty())
 					{
-						search_path.push_back(node->id);
-						closed.insert(node->id);
+						this->search_path.push_back(node->id);
+						this->closed.insert(node->id);
 						if(node->value == goal)
 						{
 							search_status = true;
@@ -127,17 +139,17 @@ namespace libgraph
 						std::list<T> tmp_list = *(adjectedListsVec[node->id].get());
 						for(typename std::list<T>::const_iterator it = tmp_list.begin(); it != tmp_list.end(); ++it)
 						{
-							if(closed.find(*it) == closed.end())
+							if(this->closed.find(*it) == this->closed.end())
 							{
-								open.push(*it);
+								this->open.push(*it);
 							}
 						}
-						size_t tmp_id = open.top();
-						open.pop();
+						size_t tmp_id = this->open.top();
+						this->open.pop();
 
 						if(search_status == true) return true;
 
-						visitDFS(storage.at(tmp_id));
+						visitDFS(this->storage.at(tmp_id));
 					}
 
 					if(search_status == true) return true;
@@ -145,25 +157,20 @@ namespace libgraph
 
 			private:
 				typedef boost::shared_ptr<node<T> > node_ptr;
-				std::vector<node_ptr> storage;
-
 				typedef boost::shared_ptr<std::list<T> > list_ptr;
 				std::vector<list_ptr> adjectedListsVec;
 
 				bool search_status;
 				T goal;
-				std::set<T> closed;
-				search_memory_model open;
-				std::vector<T> search_path;
 		};
 
 	template<typename T, typename search_memory_model>
-		class search_graph<T, search_memory_model, matrix_graph_internal_model>
+		class search_graph<T, search_memory_model, matrix_graph_internal_model> : public abstract_search_graph<T, search_memory_model, matrix_graph_internal_model>
 		{
 			public:
 				search_graph<T, search_memory_model, matrix_graph_internal_model>(const matrix_graph& g)
 				{
-					storage = g.get_memory().storage;
+					this->storage = g.get_memory().storage;
 					matrix2D = g.get_memory().matrix2D;
 					matrix_size = g.get_memory().matrix_size;
 				}
@@ -171,7 +178,7 @@ namespace libgraph
 				bool search(T root_node_value, T seeked_value_node)
 				{
 					goal = seeked_value_node;
-					for(typename std::vector<node_ptr>::const_iterator it = storage.begin(); it != storage.end(); ++it)
+					for(typename std::vector<node_ptr>::const_iterator it = this->storage.begin(); it != this->storage.end(); ++it)
 					{
 						if((*it)->value == seeked_value_node)
 						{
@@ -186,27 +193,8 @@ namespace libgraph
 							}
 						}
 					}
-					reset();
+					this->reset();
 					return false;
-				}
-
-				void display_search_path() const
-				{
-					std::copy(search_path.begin(), search_path.end(), std::ostream_iterator<T>(std::cout, " -> "));
-					std::cout << std::endl;
-				}
-
-				void reset()
-				{
-					closed.clear();
-					search_path.clear();
-
-					while (!open.empty())
-					{
-						open.pop(); // stack does not have a clear method...
-					}
-
-					search_path.clear();
 				}
 
 			protected:
@@ -214,14 +202,14 @@ namespace libgraph
 				bool visitDFS(boost::shared_ptr<node<T> > node) 
 				{
 					search_status = false;
-					if(closed.find(node->id) == closed.end())
+					if(this->closed.find(node->id) == this->closed.end())
 					{
-						open.push(node->id);
+						this->open.push(node->id);
 					}
-					while(!open.empty())
+					while(!this->open.empty())
 					{
-						search_path.push_back(node->id);
-						closed.insert(node->id);
+						this->search_path.push_back(node->id);
+						this->closed.insert(node->id);
 						if(node->value == goal)
 						{
 							search_status = true;
@@ -245,17 +233,17 @@ namespace libgraph
 
 						for(typename std::list<T>::const_iterator it = tmp_list.begin(); it != tmp_list.end(); ++it)
 						{
-							if(closed.find(*it) == closed.end())
+							if(this->closed.find(*it) == this->closed.end())
 							{
-								open.push(*it);
+								this->open.push(*it);
 							}
 						}
-						size_t tmp_id = open.top();
-						open.pop();
+						size_t tmp_id = this->open.top();
+						this->open.pop();
 
 						if(search_status == true) return true;
 
-						visitDFS(storage.at(tmp_id));
+						visitDFS(this->storage.at(tmp_id));
 					}
 
 					if(search_status == true) return true;
@@ -263,7 +251,6 @@ namespace libgraph
 
 			private:
 				typedef boost::shared_ptr<node<T> > node_ptr;
-				std::vector<node_ptr> storage;
 
 				typedef boost::shared_ptr<std::list<T> > list_ptr;
 				std::vector<std::vector<int> > matrix2D;
@@ -271,9 +258,6 @@ namespace libgraph
 				
 				bool search_status;
 				T goal;
-				std::set<T> closed;
-				search_memory_model open;
-				std::vector<T> search_path;
 		};
 } // namespace libgraph
 
