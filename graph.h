@@ -22,28 +22,45 @@ namespace libgraph
 	const size_t default_matrix_size = 10;
 
 	template<typename T, memory>
+	class abstract_memory_model
+	{
+		public:
+			boost::shared_ptr<node<T> > is_node(const T& value) const
+			{
+				for(typename std::vector<node_ptr>::const_iterator it = storage.begin(); it != storage.end(); ++it)
+				{
+					if((*it)->value == value)
+					{
+						return *it;
+					}
+				}
+				return node_ptr(new node<T>(NULL, true)); // NULL object idiom
+			}
+
+			size_t size() const
+			{
+				return storage.size();
+			}
+
+			void reserve(size_t size)
+			{
+				storage.reserve(size);
+			}
+			typedef boost::shared_ptr<node<T> > node_ptr;
+			std::vector<node_ptr> storage;
+	};
+
+	template<typename T, memory>
 		class graph_memory_model
 		{
 		};
 
 	template<typename T>
-		class graph_memory_model<T, list>
+		class graph_memory_model<T, list> : public abstract_memory_model<T, list>
 		{
 			public:
 				graph_memory_model<T, list>()
 				{
-				}
-
-				boost::shared_ptr<node<T> > is_node(const T& value) const
-				{
-					for(typename std::vector<node_ptr>::const_iterator it = storage.begin(); it != storage.end(); ++it)
-					{
-						if((*it)->value == value)
-						{
-							return *it;
-						}
-					}
-					return node_ptr(new node<T>(NULL, true)); // NULL object idiom
 				}
 
 				void add(const T& begin_node, const T& end_node) // add arc
@@ -62,7 +79,7 @@ namespace libgraph
 						node_ptr pNode = node_ptr(new node<T>(begin_node));
 						aId = pNode->id;
 						pNode->null = false;
-						storage.push_back(pNode);
+						graph_memory_model::storage.push_back(pNode);
 						adjectedListsVec.push_back(list_ptr(new std::list<T>));
 					}
 					else
@@ -76,7 +93,7 @@ namespace libgraph
 						node_ptr pNode = node_ptr(new node<T>(end_node));
 						bId = pNode->id;
 						pNode->null = false;
-						storage.push_back(pNode);
+						graph_memory_model::storage.push_back(pNode);
 						adjectedListsVec.push_back(list_ptr(new std::list<T>));
 					}
 					else
@@ -90,28 +107,17 @@ namespace libgraph
 					adjectedListsVec[bId]->push_back(aId);
 					adjectedListsVec[bId]->unique();
 
-					assert(storage.size() == adjectedListsVec.size());
+					assert(graph_memory_model::storage.size() == adjectedListsVec.size());
 				}	
 
-				size_t size() const
-				{
-					return storage.size();
-				}
-
-				void reserve(size_t size)
-				{
-					storage.reserve(size);
-				}
-
-				typedef boost::shared_ptr<node<T> > node_ptr;
-				std::vector<node_ptr> storage;
+				typedef boost::shared_ptr<node<T> > node_ptr; // we can ged rid of it but it's more pragmatic to leave it here
 
 				typedef boost::shared_ptr<std::list<T> > list_ptr;
 				std::vector<list_ptr> adjectedListsVec;
 		};
 
 	template<typename T>
-		class graph_memory_model<T, matrix>
+		class graph_memory_model<T, matrix> : public abstract_memory_model<T, matrix>
 		{
 			public:
 
@@ -129,18 +135,6 @@ namespace libgraph
 					initialize_matrix();
 				}
 				
-				boost::shared_ptr<node<T> > is_node(const T& value) const
-				{
-					for(typename std::vector<node_ptr>::const_iterator it = storage.begin(); it != storage.end(); ++it)
-					{
-						if((*it)->value == value)
-						{
-							return *it;
-						}
-					}
-					return node_ptr(new node<T>(NULL, true)); // NULL object idiom
-				}
-
 				void add(const T& begin_node, const T& end_node) // add arc
 				{
 					if(begin_node == end_node)
@@ -163,7 +157,7 @@ namespace libgraph
 							msg << "node id " << pNode->id << " is greater than maximum matrix size " << matrix_size << "!";
 							throw std::invalid_argument(msg.str()); // TODO: add test for that
 						}
-						storage.push_back(pNode);
+						graph_memory_model::storage.push_back(pNode);
 					}
 					else
 					{
@@ -182,7 +176,7 @@ namespace libgraph
 							msg << "node id " << pNode->id << " is greater than maximum matrix size " << matrix_size << "!";
 							throw std::invalid_argument(msg.str()); // TODO: add test for that
 						}
-						storage.push_back(pNode);
+						graph_memory_model::storage.push_back(pNode);
 					}
 					else
 					{
@@ -192,19 +186,7 @@ namespace libgraph
 					matrix2D.at(bId).at(aId) = 1;
 				}
 
-				size_t size() const
-				{
-					return storage.size();
-				}
-
-				void reserve(size_t size)
-				{
-					storage.reserve(size);
-				}
-
 				typedef boost::shared_ptr<node<T> > node_ptr;
-				std::vector<node_ptr> storage;
-				
 				std::vector<std::vector<int> > matrix2D;
 				const size_t matrix_size;
 			protected:

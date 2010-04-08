@@ -382,5 +382,7 @@ BOOST_AUTO_TEST_CASE(work_in_progress)
 
 	search_graph<int, std::stack<int>, list_graph_internal_model> l(lg);
 	search_graph<int, std::stack<int>, matrix_graph_internal_model> m(mg);
+
+	abstract_memory_model<int, list> amm;
 }
 
