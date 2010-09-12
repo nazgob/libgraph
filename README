@@ -1,2 +1,3 @@
 c++ graph stuctures && algorithms lib.
-idea was to explore some basic graph alorithms while playing with c++ generic programing. there is no OO code in this project yet it has decent degree of modularity and extensebility. for instance one can type graph with different data structures(linked list for spare graphs and matricies for dense graphs) or with search strategy. It's all done at compile time so it's pretty fast. Enjoy.
+idea was to explore some basic graph algorithms while playing with c++ generic programing. there is no OO code in this project yet it has decent degree of modularity and extensibility. for instance one can type graph with different data structures(linked list for spare graphs and matrices for dense graphs) or with search strategy. it's all done at compile time so it's pretty fast.
+enjoy.
