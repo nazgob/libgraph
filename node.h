@@ -3,53 +3,53 @@
 
 namespace libgraph
 {
-	template<typename T>
-		class node 
-		{
-			public:
-				node(const T& input, bool nullity = false) : value(input), id(0), null(false)
-			{
-				if(false == nullity)
-				{
-					id = counter++; // counting from 0 is handy in C++
-				}
-				else
-				{
-					null = true;
-				}
-			}
-				static void reset()
-				{
-					counter = 0;
-				}
+  template<typename T>
+    class node 
+    {
+      public:
+        node(const T& input, bool nullity = false) : value(input), id(0), null(false)
+      {
+        if(false == nullity)
+        {
+          id = counter++; // counting from 0 is handy in C++
+        }
+        else
+        {
+          null = true;
+        }
+      }
+        static void reset()
+        {
+          counter = 0;
+        }
 
-				bool operator==(const node<T>& n) const
-				{
-					return (value == n.value) && (id == n.id);
-				}
+        bool operator==(const node<T>& n) const
+        {
+          return (value == n.value) && (id == n.id);
+        }
 
-				bool operator!=(const node<T>& n) const
-				{
-					return (value != n.value) || (id != n.id);
-				}
+        bool operator!=(const node<T>& n) const
+        {
+          return (value != n.value) || (id != n.id);
+        }
 
-				bool is_null() const
-				{
-					return null;
-				}
+        bool is_null() const
+        {
+          return null;
+        }
 
-				T value;
-				size_t id;
-				bool null;
-			private:
-				node& operator = (const node& other) {}
-				node(const node& other) {}
+        T value;
+        size_t id;
+        bool null;
+      private:
+        node& operator = (const node& other) {}
+        node(const node& other) {}
 
-				static size_t counter;
-		};
+        static size_t counter;
+    };
 
-	template<typename T>
-		size_t node<T>::counter = 0;
+  template<typename T>
+    size_t node<T>::counter = 0;
 
 } // namespace libgraph
 
