@@ -7,7 +7,7 @@ W_FLAGS = -Wall -Wextra -pedantic
 FLAGS = -I . $(W_FLAGS)
 
 %.o : %.cpp
-	$(CC) $(FLAGS) -c $<
+	$(CC) $(FLAGS) -I$(BOOST_INC) -c $<
 
 main: $(OBJS)
 	@echo "Building $(EXEC)"
