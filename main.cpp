@@ -6,10 +6,10 @@
 #include <stack>
 #include <vector>
 
-#include "node.h"
-#include "graph.h"
-#include "search.h"
-#include "types.h"
+#include "node.hpp"
+#include "graph.hpp"
+#include "search.hpp"
+#include "types.hpp"
 
 using namespace libgraph;
 

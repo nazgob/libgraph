@@ -9,9 +9,9 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include "types.h"
-#include "graph.h"
-#include "node.h"
+#include "types.hpp"
+#include "graph.hpp"
+#include "node.hpp"
 
 namespace libgraph 
 {

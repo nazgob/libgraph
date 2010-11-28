@@ -12,7 +12,7 @@
 #include <exception>
 #include <boost/shared_ptr.hpp>
 
-#include "node.h"
+#include "node.hpp"
 
 
 namespace libgraph

@@ -3,9 +3,9 @@
 
 #include <boost/mpl/list.hpp>
 
-#include "node.h"
-#include "graph.h"
-#include "search.h"
+#include "node.hpp"
+#include "graph.hpp"
+#include "search.hpp"
 
 namespace libgraph 
 {
